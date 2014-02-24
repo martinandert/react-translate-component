@@ -1,0 +1,53 @@
+{
+  "name": "react-translate-component",
+  "version": "0.0.0",
+  "description": "A component for React that utilizes the globalization module to translate/localize its content",
+  "main": "index.js",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/martinandert/react-translate-component.git"
+  },
+  "keywords": [
+    "react",
+    "react-component",
+    "translation",
+    "translate",
+    "localization",
+    "localize",
+    "interpolation",
+    "interpolate",
+    "i18n"
+  ],
+  "author": {
+    "name": "Martin Andert",
+    "email": "mandert@gmail.com"
+  },
+  "license": "MIT",
+  "scripts": {
+    "test": "make test"
+  },
+  "bugs": {
+    "url": "https://github.com/martinandert/react-translate-component/issues"
+  },
+  "homepage": "https://github.com/martinandert/react-translate-component",
+  "dependencies": {
+    "extend": "~1.2.1",
+    "react-interpolate-component": "~0.2.3"
+  },
+  "peerDependencies": {
+    "react": "~0.9.0",
+    "globalization": "~0.9.5"
+  },
+  "devDependencies": {
+    "semver": "~2.2.1",
+    "node-dev": "~2.1.6",
+    "jsxhint": "~0.4.2",
+    "mocha": "~1.17.1",
+    "connect-browserify": "~1.0.0",
+    "express": "~3.4.8",
+    "node-jsx": "~0.2.1",
+    "reactify": "~0.7.0",
+    "react": "~0.9.0",
+    "globalization": "~0.9.5"
+  }
+}
