@@ -78,7 +78,6 @@ if (typeof window !== 'undefined') {
 }
 
 module.exports = MyApp;
-})
 ```
 
 Now we have the basic chrome for our litte app.
@@ -104,6 +103,7 @@ var LocaleSwitcher = React.createClass({
     );
   }
 });
+```
 
 For our litte app, we hard-coded the available locales. Whenever the user selects a different locale from the drop-down, we set the locale in the Counterpart library, which in turn triggers an event that our soon to be integrated Translate component listens to.
 
