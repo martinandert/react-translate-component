@@ -2,7 +2,7 @@
 
 var React       = require('react');
 var Interpolate = require('react-interpolate-component');
-var translate   = require('globalization');
+var translate   = require('counterpart');
 var extend      = require('extend');
 
 var Translate = React.createClass({

@@ -1,6 +1,6 @@
 # React Translate Component
 
-A component for [React][1] that utilizes the [globalization module][2] and the [Interpolate component][3] to translate its content.
+A component for [React][1] that utilizes the [counterpart module][2] and the [Interpolate component][3] to translate its content.
 
 
 ## Installation
@@ -45,5 +45,5 @@ Released under The MIT License.
 
 
 [1]: http://facebook.github.io/react/
-[2]: https://github.com/martinandert/globalization
+[2]: https://github.com/martinandert/counterpart
 [3]: https://github.com/martinandert/react-interpolate-component

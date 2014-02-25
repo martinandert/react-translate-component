@@ -1,17 +1,17 @@
-var assert    = require('assert');
-var React     = require('react');
-var g11n      = require('globalization');
-var Translate = require('./');
-var render    = React.renderComponentToString;
+var assert      = require('assert');
+var React       = require('react');
+var counterpart = require('counterpart');
+var Translate   = require('./');
+var render      = React.renderComponentToString;
 
-g11n.registerTranslations('en', {
+counterpart.registerTranslations('en', {
   test: {
     greeting: 'Hello, %(name)s!',
     greeting_html: 'Hello, <b>%(name)s</b>!'
   }
 });
 
-g11n.registerTranslations('de', {
+counterpart.registerTranslations('de', {
   test: {
     greeting: 'Hallo %(name)s!',
     greeting_html: 'Hallo <b>%(name)s</b>!'
@@ -42,7 +42,7 @@ describe('The Translate component', function() {
   });
 
   it('properly translates stuff', function() {
-    g11n.withLocale('en', function() {
+    counterpart.withLocale('en', function() {
       assert.matches(/Hello, <\/span><span[^>]*>Martin/, render(Translate({ name: 'Martin' }, 'test.greeting')));
       assert.matches(/Hello, <\/span><span[^>]*>Martin/, render(Translate({ name: 'Martin' }, ['test', 'greeting'])));
 
@@ -72,19 +72,19 @@ describe('The Translate component', function() {
       var props = { locale: 'de', name: 'Martin', component: React.DOM.title };
       var markup = render(Translate(props, 'test.greeting'));
 
-      g11n.withLocale('en', function() {
+      counterpart.withLocale('en', function() {
         assert.matches(/Hallo Martin!/, markup);
       });
     });
   });
 
-  it('provides a globalization-inspired convenience method for building components', function() {
+  it('provides a counterpart-inspired convenience method for building components', function() {
     var _t = Translate.translate;
     var component = _t('greeting', { scope: 'test', name: 'Martin', unsafe: true });
 
     assert(React.isValidComponent(component));
 
-    g11n.withLocale('de', function() {
+    counterpart.withLocale('de', function() {
       var markup = render(component);
       assert.matches(/^<span[^>]*>Hallo Martin!<\/span>$/, markup);
       assert.doesNotMatch(/\sscope="test"/, markup);

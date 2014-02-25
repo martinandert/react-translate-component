@@ -2,28 +2,28 @@
 
 'use strict';
 
-var React     = require('react');
-var g11n      = require('globalization');
-var Translate = require('../');
+var React       = require('react');
+var counterpart = require('counterpart');
+var Translate   = require('../');
 
-// this is a globalization-style convenience function that
+// this is a counterpart-style convenience function that
 // returns a React component
 var _t = require('../').translate;
 
-// this is required to disable globalization's warning
+// this is required to disable counterpart's warning
 // about a missing pluralization algorithm for German
-g11n.registerTranslations('de', require('globalization/locales/de'));
+counterpart.registerTranslations('de', require('counterpart/locales/de'));
 
 // load our own translations
-g11n.registerTranslations('en', require('./locales/en'));
-g11n.registerTranslations('de', require('./locales/de'));
+counterpart.registerTranslations('en', require('./locales/en'));
+counterpart.registerTranslations('de', require('./locales/de'));
 
 // uncomment the next line to set the initial locale to 'de'
-//g11n.setLocale('de');
+//counterpart.setLocale('de');
 
 var LanguageSwitcher = React.createClass({
   handleChange: function(e) {
-    g11n.setLocale(e.target.value);
+    counterpart.setLocale(e.target.value);
   },
 
   render: function() {
@@ -37,7 +37,7 @@ var LanguageSwitcher = React.createClass({
       <p>
         { _t('example.switch_language') }
 
-        <select defaultValue={g11n.getLocale()} onChange={this.handleChange}>
+        <select defaultValue={counterpart.getLocale()} onChange={this.handleChange}>
           {options}
         </select>
       </p>
@@ -47,7 +47,7 @@ var LanguageSwitcher = React.createClass({
 
 var PersonName = React.createClass({
   handleClick: function(e) {
-    alert(g11n.translate('example.you_clicked_on', { what: this.props.name }));
+    alert(counterpart.translate('example.you_clicked_on', { what: this.props.name }));
   },
 
   render: function() {
@@ -131,7 +131,7 @@ var App = React.createClass({
           <LanguageSwitcher locales={this.props.locales} />
           <PeopleList people={this.props.people} />
           <SecondsPassed />
-          <Translate locale="en" component={React.DOM.p}>example.locale_prop_text</Translate>
+          <Translate locale="en" component={React.DOM.p} unsafe={true}>example.locale_prop_text</Translate>
         </body>
       </html>
     );

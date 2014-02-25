@@ -16,12 +16,12 @@ module.exports = {
     },
 
     seconds_passed: {
-      zero:   'Seit dem Aufruf dieser Webseite ist <i>noch keine Sekunde</i> vergangen.',
-      one:    'Seit dem Aufruf dieser Webseite ist <i>eine Sekunde</i> vergangen.',
-      other:  'Seit dem Aufruf dieser Webseite sind <i>%(count)s Sekunden</i> vergangen.'
+      zero:   'Seit dem Aufruf dieser Webseite ist <b>noch keine Sekunde</b> vergangen.',
+      one:    'Seit dem Aufruf dieser Webseite ist <b>eine Sekunde</b> vergangen.',
+      other:  'Seit dem Aufruf dieser Webseite sind <b>%(count)s Sekunden</b> vergangen.'
     },
 
-    locale_prop_text: 'Dieser deutsche Text sollte eigentlich niemals angezeigt werden, da hier das "locale" prop explizit auf "en" gesetzt wurde.',
+    locale_prop_text: 'Dieser deutsche Text sollte eigentlich niemals angezeigt werden, da hier das "locale" prop <i>explizit</i> auf "en" gesetzt wurde.',
 
     you_clicked_on: 'Du hast auf %(what)s geklickt.'
   }

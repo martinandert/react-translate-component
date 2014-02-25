@@ -16,11 +16,11 @@ module.exports = {
     },
 
     seconds_passed: {
-      one:    '<i>One second</i> has passed since requesting the page.',
-      other:  '<i>%(count)s seconds</i> have passed since requesting the page.'
+      one:    '<b>One second</b> has passed since requesting the page.',
+      other:  '<b>%(count)s seconds</b> have passed since requesting the page.'
     },
 
-    locale_prop_text: 'Although this sentence is fetched from translation data, it does not change when switching the language because the locale is hard-coded as a prop here.',
+    locale_prop_text: 'Although this sentence is fetched from translation data, it does not change when switching the language because the <i>locale is hard-coded as a prop</i> here.',
 
     you_clicked_on: 'You clicked on %(what)s.'
   }
