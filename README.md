@@ -27,7 +27,7 @@ $ npm init
 Next, add a dependency to our Translate component:
 
 ```bash
-npm install react-translate-component --save
+$ npm install react-translate-component --save
 ```
 
 This also installs React because it is configured as a peer dependency.
