@@ -57,7 +57,7 @@ var Translate = React.createClass({
     var parent  = this.props.component || React.DOM.span;
     var useIC   = Translate.textContentComponents.indexOf(parent) === -1;
     var root    = useIC ? Interpolate : parent;
-    var options = extend(true, { locale: this.state.locale }, this.props, { interpolate: !useIC });
+    var options = extend({ locale: this.state.locale }, this.props, { interpolate: !useIC });
 
     this.key = this.key || this.props.children;
 
