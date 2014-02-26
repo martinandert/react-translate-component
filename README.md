@@ -56,7 +56,7 @@ var MyApp = React.createClass({
       React.DOM.html(null,
         React.DOM.head(null,
           React.DOM.meta({ charSet: 'utf-8' }),
-          React.DOM.title(null, 'React Translate Example'),
+          React.DOM.title(null, 'React Translate Quick-Start'),
           React.DOM.script({ src: '/bundle.js' })
         ),
 
@@ -141,9 +141,9 @@ Now add the new Greeter component to the body element, provide a `name` prop hol
         )
 ```
 
-The value of the `name` prop will be interpolated into the translation result. The `component` prop tells Translate which HTML tag to render as container element.
+The value of the `name` prop will be interpolated into the translation result. The `component` prop tells Translate which HTML tag to render as container element (a `<span>` by default).
 
-All that's left to do is to add the actual translations. You do so by calling the `registerTranslations` function of Counterpart:
+All that's left to do is to add the actual translations. You do so by calling the `registerTranslations` function of Counterpart. Add this to `client.js`:
 
 ```js
 counterpart.registerTranslations('en', {
@@ -201,9 +201,9 @@ Last but not least, start the application:
 $ node server.js
 ```
 
-It should tell you to point your browser to [http://localhost:3000]. There you will find the page greeting you. Observe that when switching locales the greeting message adjusts its text to the new locale without ever reloading the page or doing any ajax magic.
+It should tell you to point your browser to [http://localhost:3000][8]. There you will find the page greeting you. Observe that when switching locales the greeting message adjusts its text to the new locale without ever reloading the page or doing any ajax magic.
 
-Please take a look at this repo's `spec.js` file to see some more nice tricks. To become a master craftsman we encourage you to also read [Counterpart's README][7]
+Please take a look at this repo's `spec.js` file to see some more nice tricks. To become a master craftsman we encourage you to also read [Counterpart's README][7].
 
 
 ## An Advanced Example
@@ -240,3 +240,4 @@ Released under The MIT License.
 [5]: http://nodejs.org/
 [6]: https://www.npmjs.org/
 [7]: https://github.com/martinandert/counterpart#readme
+[8]: http://localhost:3000
