@@ -44,6 +44,20 @@ describe('The Translate component', function() {
     });
   });
 
+  it('respects Counterpart\'s current locale', function() {
+    counterpart.withLocale('de', function() {
+      assert.matches(/Hallo/, render(Translate({ name: 'Martin' }, 'test.greeting')));
+      assert.doesNotMatch(/^missing translation:/, render(Translate({ name: 'Martin' }, 'test.greeting')));
+    });
+  });
+
+  it('respects Counterpart\'s current scope', function() {
+    counterpart.withScope('test', function() {
+      assert.matches(/Hello/, render(Translate({ name: 'Martin' }, 'greeting')));
+      assert.doesNotMatch(/^missing translation:/, render(Translate({ name: 'Martin' }, 'greeting')));
+    });
+  });
+
   describe('with the `component` prop set to a "text-only" React component', function() {
     it('does not render HTML markup inside that component', function() {
       ['option', 'title', 'textarea'].forEach(function(tagName) {
