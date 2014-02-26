@@ -1,6 +1,6 @@
 # React Translate Component
 
-A component for [React][1] that utilizes the [Counterpart module][2] and the [Interpolate component][3] to translate its content.
+A component for [React][1] that utilizes the [Counterpart module][2] and the [Interpolate component][3] to provide multi-lingual/localized text content.
 
 
 ## Installation
@@ -14,14 +14,15 @@ Install via npm:
 
 ## Usage
 
-Here is step-by-step guide on how to build a simple app that uses this component from scratch. We assume you have [Node.js][5] and [npm][6] installed.
+Here is a quick-start tutorial to get you up and running with Translate. It's a step-by-step guide on how to build a simple app that uses the Translate component from scratch. We assume you have the latest versions of [Node.js][5] and [npm][6] installed.
 
-First, let's create a project:
+First, let's create a new project:
 
 ```bash
 $ mkdir translate-example
 $ cd translate-example
-$ npm init
+$ touch client.js
+$ npm init                   # accept all defaults here
 ```
 
 Next, add a dependency to our Translate component:
@@ -30,27 +31,21 @@ Next, add a dependency to our Translate component:
 $ npm install react-translate-component --save
 ```
 
-This also installs React because it is configured as a peer dependency.
+This also installs React and Counterpart because these are configured as a peer dependencies.
 
-Then we need a JavaScript file to put our application logic into:
-
-```bash
-$ touch index.js
-```
-
-Open this file in your favorite editor and add the following lines:
+We will put out application logic into `client.js`. Open the file in your favorite editor and add the following lines:
 
 ```js
 'use strict';
 
 var counterpart = require('counterpart');
 var React       = require('react');
-var Interpolate = require('react-interpolate-component');
+var Translate   = require('react-translate-component');
 ```
 
-This loads the localization library, React and our Interpolate component.
+This loads the localization library, React and our Translate component.
 
-Let's write our entry-point component. Add the following code to the file:
+Let's write our entry-point React component. Add the following code to the file:
 
 ```js
 var MyApp = React.createClass({
@@ -60,11 +55,12 @@ var MyApp = React.createClass({
     return (
       React.DOM.html(null,
         React.DOM.head(null,
+          React.DOM.meta({ charSet: 'utf-8' }),
           React.DOM.script({ src: '/bundle.js' })
         ),
 
         React.DOM.body(null,
-          /* body content will be added soon */
+          '--> body content will be added soon <--'
         )
       )
     );
@@ -80,9 +76,9 @@ if (typeof window !== 'undefined') {
 module.exports = MyApp;
 ```
 
-Now we have the basic chrome for our litte app.
+Now we have the basic HTML chrome for our litte app.
 
-Next, we will create a locale switcher component. Here the code to add to the file:
+Next, we will create a LocaleSwitcher component which will be used to, well, switch locales. Here is the code to append to `client.js`:
 
 ```js
 var LocaleSwitcher = React.createClass({
@@ -105,14 +101,109 @@ var LocaleSwitcher = React.createClass({
 });
 ```
 
-For our litte app, we hard-coded the available locales. Whenever the user selects a different locale from the drop-down, we set the locale in the Counterpart library, which in turn triggers an event that our soon to be integrated Translate component listens to.
+For demonstration purposes, we hard-code the available locales. 
 
-*To be continued soon.*
+Whenever the user selects a different locale from the drop-down, we correspondingly set the new drop-down's value as locale in the Counterpart library, which in turn triggers an event that our (soon to be integrated) Translate component listens to. As initially selected value for the select element we specify Counterpart's current locale ("en" by default).
+
+Now add the locale switcher component into the empty body element of our MyApp component:
+
+```js
+        React.DOM.body(null,
+          LocaleSwitcher()
+        )
+```
+
+Next, we create a Greeter component that is going to display a localized message which will greet you:
+
+```js
+var Greeter = React.createClass({
+  render: function() {
+    return this.transferPropsTo(
+      Translate(null, 'example.greeting')
+    );
+  }
+});
+```
+
+In the component's render function, we simply transfer all incoming props to Translate (the component this repo is all about). As its only child we specify the string "example.greeting" which acts as the key into the translations dictionary of Counterpart.
+
+Now add the Greeter component to the body element, provide a `name` prop holding your first name and a `component` prop which is set to `React.DOM.h1`
+
+```js
+        React.DOM.body(null,
+          LocaleSwitcher(),
+          Greeter({ name: 'Martin', component: React.DOM.h1 })
+        )
+```
+
+The value of the `name` prop will be interpolated into the translation result. The `component` prop tells Translate, which HTML tag to render as container element.
+
+All that's left to do is to add the actual translations. You do so by calling the `registerTranslations` function of Counterpart:
+
+```js
+counterpart.registerTranslations('en', {
+  example: {
+    greeting: 'Hello %(name)s! How are you today?'
+  }
+});
+
+counterpart.registerTranslations('de', {
+  example: {
+    greeting: 'Hallo, %(name)s! Wie geht\'s dir heute so?'
+  }
+});
+```
+
+In the translations above we defined placeholders (in sprintf's named arguments syntax) which will be interpolated with the value of the `name` prop we gave to the Greeter component.
+
+That's it for the application logic. To eventually see this working in a browser, we need to create the server-side code which will be executed by Node.js.
+
+First, let's install some required dependencies and create a `server.js` file:
+
+```bash
+$ npm install express connect-browserify --save
+$ touch server.js
+```
+
+Now open up `server.js` and add the following lines:
+
+```js
+'use strict';
+
+var express     = require('express');
+var browserify  = require('connect-browserify');
+var render      = require('react').renderComponentToString;
+var App         = require('./client');
+
+express()
+  .use('/bundle.js', browserify.serve({
+    entry: __dirname + '/client',
+    debug: true, watch: true
+  }))
+  .get('/', function(req, res, next) {
+    res.send(render(App()));
+  })
+  .listen(3000, function() {
+    console.log('Point your browser to http://localhost:3000');
+  });
+```
+
+Note that you shouldn't use this code in production as the `bundle.js` file will be compiled on every request.
+
+Last but not least, start the application:
+
+```bash
+$ node server.js
+```
+
+It should tell you to point your browser to http://localhost:3000/. There you will find the page greeting you. Observe that when switching locales the greeting message adjusts its text to the new locale without ever reloading the page.
+
+Please take a look at this repo's `spec.js` file to see some more nice tricks. To become a master craftsman we encourage you to also read [Counterpart's README][7]
 
 
-## Example
+## An Advanced Example
 
-The examples code is located at `example` directory. You can clone this repository and run `make install example` and point your web browser to
+The code for a more sophisticated example can be found in the repo's `example` directory. You can clone this repository and run `make install example` and point your web browser to
 `http://localhost:3000`. In case you are too lazy for that, we also have a [live demo of the example app][4] on Heroku.
 
 
@@ -143,3 +234,4 @@ Released under The MIT License.
 [4]: http://react-translate-component.herokuapp.com/
 [5]: http://nodejs.org/
 [6]: https://www.npmjs.org/
+[7]: https://github.com/martinandert/counterpart#readme
