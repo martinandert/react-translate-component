@@ -1,6 +1,6 @@
 # React Translate Component
 
-A component for [React][1] that utilizes the [Counterpart module][2] and the [Interpolate component][3] to provide multi-lingual/localized text content.
+Translate is a component for [React][1] that utilizes the [Counterpart module][2] and the [Interpolate component][3] to provide multi-lingual/localized text content. It enables switching locales without a page reload.
 
 
 ## Installation
@@ -33,7 +33,7 @@ $ npm install react-translate-component --save
 
 This also installs React and Counterpart because these are configured as a peer dependencies.
 
-We will put out application logic into `client.js`. Open the file in your favorite editor and add the following lines:
+We will put our application logic into `client.js`. Open the file in your favorite editor and add the following lines:
 
 ```js
 'use strict';
@@ -56,6 +56,7 @@ var MyApp = React.createClass({
       React.DOM.html(null,
         React.DOM.head(null,
           React.DOM.meta({ charSet: 'utf-8' }),
+          React.DOM.title(null, 'React Translate Example'),
           React.DOM.script({ src: '/bundle.js' })
         ),
 
@@ -76,7 +77,7 @@ if (typeof window !== 'undefined') {
 module.exports = MyApp;
 ```
 
-Now we have the basic HTML chrome for our litte app.
+Now we have the basic HTML chrome for our tiny little app.
 
 Next, we will create a LocaleSwitcher component which will be used to, well, switch locales. Here is the code to append to `client.js`:
 
@@ -89,9 +90,13 @@ var LocaleSwitcher = React.createClass({
   render: function() {
     return (
       React.DOM.p(null,
-        React.DOM.span(null, 'Switch Locale:'),
+        React.DOM.span(null, 'Switch Locale: '),
 
-        React.DOM.select({ defaultValue: counterpart.getLocale(), onChange: this.handleChange }, 
+        React.DOM.select(
+            { 
+              defaultValue: counterpart.getLocale(), 
+              onChange:     this.handleChange
+            }, 
           React.DOM.option(null, 'en'),
           React.DOM.option(null, 'de')
         )
@@ -101,11 +106,11 @@ var LocaleSwitcher = React.createClass({
 });
 ```
 
-For demonstration purposes, we hard-code the available locales. 
+For demonstration purposes, we don't bother and hard-code the available locales. 
 
-Whenever the user selects a different locale from the drop-down, we correspondingly set the new drop-down's value as locale in the Counterpart library, which in turn triggers an event that our (soon to be integrated) Translate component listens to. As initially selected value for the select element we specify Counterpart's current locale ("en" by default).
+Whenever the user selects a different locale from the drop-down, we correspondingly set the new drop-down's value as locale in the Counterpart library, which in turn triggers an event that our (soon to be integrated) Translate component listens to. As initially active value for the select element we specify Counterpart's current locale ("en" by default).
 
-Now add the locale switcher component into the empty body element of our MyApp component:
+Now add LocaleSwitcher as child of the empty body element of our MyApp component:
 
 ```js
         React.DOM.body(null,
@@ -127,7 +132,7 @@ var Greeter = React.createClass({
 
 In the component's render function, we simply transfer all incoming props to Translate (the component this repo is all about). As its only child we specify the string "example.greeting" which acts as the key into the translations dictionary of Counterpart.
 
-Now add the Greeter component to the body element, provide a `name` prop holding your first name and a `component` prop which is set to `React.DOM.h1`
+Now add the new Greeter component to the body element, provide a `name` prop holding your first name and a `component` prop which is set to `React.DOM.h1`:
 
 ```js
         React.DOM.body(null,
@@ -136,7 +141,7 @@ Now add the Greeter component to the body element, provide a `name` prop holding
         )
 ```
 
-The value of the `name` prop will be interpolated into the translation result. The `component` prop tells Translate, which HTML tag to render as container element.
+The value of the `name` prop will be interpolated into the translation result. The `component` prop tells Translate which HTML tag to render as container element.
 
 All that's left to do is to add the actual translations. You do so by calling the `registerTranslations` function of Counterpart:
 
@@ -156,7 +161,7 @@ counterpart.registerTranslations('de', {
 
 In the translations above we defined placeholders (in sprintf's named arguments syntax) which will be interpolated with the value of the `name` prop we gave to the Greeter component.
 
-That's it for the application logic. To eventually see this working in a browser, we need to create the server-side code which will be executed by Node.js.
+That's it for the application logic. To eventually see this working in a browser, we need to create the server-side code that will be executed by Node.js.
 
 First, let's install some required dependencies and create a `server.js` file:
 
@@ -196,7 +201,7 @@ Last but not least, start the application:
 $ node server.js
 ```
 
-It should tell you to point your browser to http://localhost:3000/. There you will find the page greeting you. Observe that when switching locales the greeting message adjusts its text to the new locale without ever reloading the page.
+It should tell you to point your browser to [http://localhost:3000]. There you will find the page greeting you. Observe that when switching locales the greeting message adjusts its text to the new locale without ever reloading the page or doing any ajax magic.
 
 Please take a look at this repo's `spec.js` file to see some more nice tricks. To become a master craftsman we encourage you to also read [Counterpart's README][7]
 
