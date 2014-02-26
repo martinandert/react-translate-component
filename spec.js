@@ -18,20 +18,8 @@ counterpart.registerTranslations('de', {
   }
 });
 
-// hack: suppress React console output
+// hack: suppress React's console warnings
 console.warn = function() {};
-
-assert.matches = function(regexp, value, message) {
-  if (!regexp.test(value)) {
-    assert.fail(value, regexp, message, '=~');
-  }
-};
-
-assert.doesNotMatch = function(regexp, value, message) {
-  if (regexp.test(value)) {
-    assert.fail(value, regexp, message, '!~');
-  }
-};
 
 describe('The Translate component', function() {
   it('transfers props', function() {
@@ -41,7 +29,7 @@ describe('The Translate component', function() {
     assert.matches(/^<h1 [^>]*?class="foo"/, markup);
   });
 
-  it('properly translates stuff', function() {
+  it('translates stuff properly', function() {
     counterpart.withLocale('en', function() {
       assert.matches(/Hello, <\/span><span[^>]*>Martin/, render(Translate({ name: 'Martin' }, 'test.greeting')));
       assert.matches(/Hello, <\/span><span[^>]*>Martin/, render(Translate({ name: 'Martin' }, ['test', 'greeting'])));
@@ -95,3 +83,19 @@ describe('The Translate component', function() {
     assert(true);
   });
 });
+
+
+
+// spec helpers
+
+assert.matches = function(regexp, value, message) {
+  if (!regexp.test(value)) {
+    assert.fail(value, regexp, message, '=~');
+  }
+};
+
+assert.doesNotMatch = function(regexp, value, message) {
+  if (regexp.test(value)) {
+    assert.fail(value, regexp, message, '!~');
+  }
+};
