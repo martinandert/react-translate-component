@@ -1,6 +1,6 @@
 # React Translate Component
 
-Translate is a component for [React][1] that utilizes the [Counterpart module][2] and the [Interpolate component][3] to provide multi-lingual/localized text content. It enables switching locales without a page reload.
+Translate is a component for [React][1] that utilizes the [Counterpart module][2] and the [Interpolate component][3] to provide multi-lingual/localized text content. It allows switching locales without a page reload.
 
 
 ## Installation
@@ -14,7 +14,7 @@ Install via npm:
 
 ## Usage
 
-Here is a quick-start tutorial to get you up and running with Translate. It's a step-by-step guide on how to build a simple app that uses the Translate component from scratch. We assume you have the latest versions of [Node.js][5] and [npm][6] installed.
+Here is a quick-start tutorial to get you up and running with Translate. It's a step-by-step guide on how to build a simple app that uses the Translate component from scratch. We assume you have recent versions of [Node.js][5] and [npm][6] installed.
 
 First, let's create a new project:
 
