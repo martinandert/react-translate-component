@@ -51,17 +51,13 @@ var Translate = React.createClass({
     this.setState({ locale: newLocale });
   },
 
-  key: null,
-
   render: function() {
     var container   = this.props.component || React.DOM.span;
     var textContent = Translate.textContentComponents.indexOf(container) > -1;
     var interpolate = textContent || this.props.unsafe === true;
     var options     = extend({ locale: this.state.locale }, this.props, { interpolate: interpolate });
 
-    this.key = this.key || this.props.children;
-
-    var translation = translate(this.key, options);
+    var translation = translate(this.props.children, options);
 
     delete options.locale;
     delete options.scope;
