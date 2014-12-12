@@ -91,5 +91,5 @@ var Translate = React.createClass({
 module.exports = Translate;
 
 module.exports.translate = function(key, options) {
-  return React.createElement(Translate, extend(options, { content: key }));
+  return React.createElement(Translate, extend({}, options, { content: key }));
 };

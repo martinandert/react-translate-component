@@ -138,6 +138,8 @@ describe('The Translate component', function() {
       assert.matches(/^<span[^>]*>Hallo Martin!<\/span>$/, markup);
       assert.doesNotMatch(/\sscope="test"/, markup);
     });
+
+    assert.matches(/^<span[^>]*>Click me!<\/span>$/, render(_t('submit_button.tooltip')));
   });
 });
 
