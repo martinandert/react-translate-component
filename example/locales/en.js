@@ -22,6 +22,7 @@ module.exports = {
 
     locale_prop_text: 'Although this sentence is fetched from translation data, it does not change when switching the language because the <i>locale is hard-coded as a prop</i> here.',
 
+    click_me: 'Click me!',
     you_clicked_on: 'You clicked on %(what)s.'
   }
 };

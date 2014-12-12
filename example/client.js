@@ -28,7 +28,7 @@ var LanguageSwitcher = React.createClass({
     var options = this.props.locales.map(function(locale) {
       var translationKey = 'example.languages.' + locale;
 
-      return <Translate key={locale} value={locale} component="option">{translationKey}</Translate>;
+      return <Translate key={locale} value={locale} component="option" content={translationKey} />;
     });
 
     return (
@@ -49,7 +49,7 @@ var PersonName = React.createClass({
   },
 
   render: function() {
-    return <strong onClick={this.handleClick}>{this.props.name}</strong>;
+    return <Translate component="strong" attributes={{ title: 'example.click_me' }} onClick={this.handleClick}>{this.props.name}</Translate>;
   }
 });
 
@@ -64,12 +64,12 @@ var PeopleList = React.createClass({
         count:      person.age
       };
 
-      return <Translate component="li" className="person" scope="example" {...props}>person_age_sentence</Translate>;
+      return <Translate component="li" className="person" scope="example" {...props} content="person_age_sentence" />;
     }, this);
 
     return (
       <section>
-        <Translate component="h1">example.headline</Translate>
+        <Translate component="h1" content="example.headline" />
         <ul>{items}</ul>
       </section>
     );
@@ -96,7 +96,7 @@ var SecondsPassed = React.createClass({
   },
 
   render: function() {
-    return <Translate component="p" count={this.state.seconds} unsafe>example.seconds_passed</Translate>;
+    return <Translate component="p" count={this.state.seconds} content="example.seconds_passed" unsafe />;
   }
 });
 
@@ -126,7 +126,7 @@ var App = React.createClass({
           <LanguageSwitcher locales={this.props.locales} />
           <PeopleList people={this.props.people} />
           <SecondsPassed />
-          <Translate locale="en" component="p" unsafe={true}>example.locale_prop_text</Translate>
+          <Translate locale="en" component="p" content="example.locale_prop_text" unsafe />
         </body>
       </html>
     );

@@ -23,6 +23,7 @@ module.exports = {
 
     locale_prop_text: 'Dieser deutsche Text sollte eigentlich niemals angezeigt werden, da hier das "locale" prop <i>explizit</i> auf "en" gesetzt wurde.',
 
+    click_me: 'Klick mich!',
     you_clicked_on: 'Du hast auf %(what)s geklickt.'
   }
 };
