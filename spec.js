@@ -1,8 +1,9 @@
 var assert      = require('assert');
 var React       = require('react');
 var counterpart = require('counterpart');
-var Translate   = require('./');
-var render      = React.renderComponentToString;
+var TranslClass = require('./');
+var Translate   = React.createFactory(TranslClass);
+var render      = React.renderToString;
 
 counterpart.registerTranslations('en', {
   test: {
@@ -18,12 +19,14 @@ counterpart.registerTranslations('de', {
   }
 });
 
-// hack: suppress React's console warnings
-console.warn = function() {};
+// raise React console warnings as failed assertions
+console.warn = function(message) {
+  assert(false, message);
+};
 
 describe('The Translate component', function() {
   it('transfers props', function() {
-    var props  = { component: React.DOM.h1, className: 'foo' };
+    var props  = { component: 'h1', className: 'foo' };
     var markup = render(Translate(props, 'bar'));
 
     assert.matches(/^<h1 [^>]*?class="foo"/, markup);
@@ -60,8 +63,9 @@ describe('The Translate component', function() {
 
   describe('with the `component` prop set to a "text-only" React component', function() {
     it('does not render HTML markup inside that component', function() {
-      ['option', 'title', 'textarea'].forEach(function(tagName) {
-        var props = { component: React.DOM[tagName], name: 'Martin' };
+      // TODO add special treatment for <textarea>
+      ['option', 'title'].forEach(function(tagName) {
+        var props = { component: tagName, name: 'Martin' };
         var markup = render(Translate(props, 'test.greeting'));
 
         assert.matches(new RegExp('^<' + tagName + '[^>]*>[^<>]*<\/' + tagName + '>$'), markup);
@@ -71,7 +75,7 @@ describe('The Translate component', function() {
 
   describe('with the `locale` prop explicitly set', function() {
     it('disrespects the "global" locale', function() {
-      var props = { locale: 'de', name: 'Martin', component: React.DOM.title };
+      var props = { locale: 'de', name: 'Martin', component: 'title' };
       var markup = render(Translate(props, 'test.greeting'));
 
       counterpart.withLocale('en', function() {
@@ -81,20 +85,16 @@ describe('The Translate component', function() {
   });
 
   it('provides a counterpart-inspired convenience method for building components', function() {
-    var _t = Translate.translate;
+    var _t = TranslClass.translate;
     var component = _t('greeting', { scope: 'test', name: 'Martin', unsafe: true });
 
-    assert(React.isValidComponent(component));
+    assert(React.isValidElement(component));
 
     counterpart.withLocale('de', function() {
       var markup = render(component);
       assert.matches(/^<span[^>]*>Hallo Martin!<\/span>$/, markup);
       assert.doesNotMatch(/\sscope="test"/, markup);
     });
-  });
-
-  it('is cool', function() {
-    assert(true);
   });
 });
 

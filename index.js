@@ -3,7 +3,7 @@
 var React       = require('react');
 var Interpolate = require('react-interpolate-component');
 var translate   = require('counterpart');
-var extend      = require('extend');
+var extend      = require('object-assign');
 
 var Translate = React.createClass({
   displayName: 'Translate',
@@ -25,9 +25,9 @@ var Translate = React.createClass({
 
   statics: {
     textContentComponents: [
-      React.DOM.title,
-      React.DOM.option,
-      React.DOM.textarea
+      'title',
+      'option',
+      'textarea'
     ]
   },
 
@@ -52,7 +52,7 @@ var Translate = React.createClass({
   },
 
   render: function() {
-    var container   = this.props.component || React.DOM.span;
+    var container   = this.props.component || 'span';
     var textContent = Translate.textContentComponents.indexOf(container) > -1;
     var interpolate = textContent || this.props.unsafe === true;
     var options     = extend({ locale: this.state.locale }, this.props, { interpolate: interpolate });
@@ -64,12 +64,12 @@ var Translate = React.createClass({
     delete options.children;
     delete options.interpolate;
 
-    return Interpolate(options, translation);
+    return React.createElement(Interpolate, options, translation);
   }
 });
 
 module.exports = Translate;
 
 module.exports.translate = function(key, options) {
-  return Translate(options, key);
+  return React.createElement(Translate, options, key);
 };
