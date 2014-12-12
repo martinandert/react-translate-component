@@ -3,11 +3,11 @@
 var express     = require('express');
 var browserify  = require('connect-browserify');
 var reactify    = require('reactify');
-var render      = require('react').renderComponentToString;
+var React       = require('react');
 
 require('node-jsx').install();
 
-var App = require('./client');
+var App = React.createFactory(require('./client'));
 
 express()
   .use('/bundle.js', browserify.serve({
@@ -16,7 +16,7 @@ express()
     transforms: [reactify]
   }))
   .get('/', function(req, res, next) {
-    res.send(render(App()));
+    res.send(React.renderToString(App()));
   })
   .listen(3000, function() {
     console.log('Point your browser to http://localhost:3000');

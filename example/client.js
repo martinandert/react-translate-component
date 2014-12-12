@@ -1,5 +1,3 @@
-/** @jsx React.DOM */
-
 'use strict';
 
 var React       = require('react');
@@ -8,7 +6,7 @@ var Translate   = require('../');
 
 // this is a counterpart-style convenience function that
 // returns a React component
-var _t = require('../').translate;
+var _t = Translate.translate;
 
 // this is required to disable counterpart's warning
 // about a missing pluralization algorithm for German
@@ -30,7 +28,7 @@ var LanguageSwitcher = React.createClass({
     var options = this.props.locales.map(function(locale) {
       var translationKey = 'example.languages.' + locale;
 
-      return <Translate key={locale} value={locale} component={React.DOM.option}>{translationKey}</Translate>;
+      return <Translate key={locale} value={locale} component="option">{translationKey}</Translate>;
     });
 
     return (
@@ -62,19 +60,16 @@ var PeopleList = React.createClass({
 
       var props = {
         key:        'p-' + index,
-        className:  'person',
-        scope:      'example',
         firstName:  name,
-        count:      person.age,
-        component:  React.DOM.li
+        count:      person.age
       };
 
-      return Translate(props, 'person_age_sentence');
+      return <Translate component="li" className="person" scope="example" {...props}>person_age_sentence</Translate>;
     }, this);
 
     return (
       <section>
-        <Translate component={React.DOM.h1}>example.headline</Translate>
+        <Translate component="h1">example.headline</Translate>
         <ul>{items}</ul>
       </section>
     );
@@ -101,7 +96,7 @@ var SecondsPassed = React.createClass({
   },
 
   render: function() {
-    return Translate({ component:  React.DOM.p, count: this.state.seconds, unsafe: true }, 'example.seconds_passed');
+    return <Translate component="p" count={this.state.seconds} unsafe>example.seconds_passed</Translate>;
   }
 });
 
@@ -131,7 +126,7 @@ var App = React.createClass({
           <LanguageSwitcher locales={this.props.locales} />
           <PeopleList people={this.props.people} />
           <SecondsPassed />
-          <Translate locale="en" component={React.DOM.p} unsafe={true}>example.locale_prop_text</Translate>
+          <Translate locale="en" component="p" unsafe={true}>example.locale_prop_text</Translate>
         </body>
       </html>
     );
@@ -139,8 +134,10 @@ var App = React.createClass({
 });
 
 if (typeof window !== 'undefined') {
+  window.React = React;
+
   window.onload = function() {
-    React.renderComponent(<App />, document);
+    React.render(<App />, document);
   };
 }
 
