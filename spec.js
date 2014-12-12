@@ -90,6 +90,16 @@ describe('The Translate component', function() {
     });
   });
 
+  it('does not translate its children (since v0.7 the content attribute is used to translate the, well... content)', function() {
+    counterpart.withLocale('de', function() {
+      var props = { component: 'button', type: 'submit', attributes: { title: 'submit_button.tooltip' } };
+      var markup = render(Translate(props, React.DOM.span(null, 'Do it!')));
+
+      assert.matches(/^<button [^>]+><span[^>]*>Do it!<\/span><\/button>$/, markup);
+      assert.matches(/\stitle="Klick mich!"/, markup);
+    });
+  });
+
   it('respects Counterpart\'s current locale', function() {
     counterpart.withLocale('de', function() {
       assert.matches(/Hallo/, render(Translate({ name: 'Martin', content: 'test.greeting' })));
