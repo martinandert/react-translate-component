@@ -1,0 +1,5 @@
+example
+.jshintrc
+.npmignore
+Makefile
+spec.js
