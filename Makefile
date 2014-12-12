@@ -1,19 +1,16 @@
-.DELETE_ON_ERROR:
-
 BIN = ./node_modules/.bin
-PATH := $(BIN):$(PATH)
 
 test: lint
-	@mocha -t 5000 -b -R spec spec.js
+	@$(BIN)/mocha -t 5000 -b -R spec spec.js
 
 lint:
-	@jsxhint index.js example/
+	@$(BIN)/jsxhint index.js example/
 
-install link:
-	@npm $@
+install:
+	npm install
 
 example::
-	@node-dev --no-deps example/server.js
+	@$(BIN)/node-dev --no-deps example/server.js
 
 release-patch: test
 	@$(call release,patch)
@@ -29,5 +26,5 @@ publish:
 	npm publish
 
 define release
-	npm version $(1)
+	npm version $(1) --message "release v%s"
 endef
