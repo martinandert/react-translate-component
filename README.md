@@ -47,30 +47,28 @@ This loads the localization library, React and our Translate component.
 
 Let's write our entry-point React component. Add the following code to the file:
 
-```js
+```jsx
 var MyApp = React.createClass({
-  displayName: 'MyApp',
-
   render: function() {
     return (
-      React.DOM.html(null,
-        React.DOM.head(null,
-          React.DOM.meta({ charSet: 'utf-8' }),
-          React.DOM.title(null, 'React Translate Quick-Start'),
-          React.DOM.script({ src: '/bundle.js' })
-        ),
+      <html>
+        <head>
+          <meta charSet="utf-8" />
+          <title>React Translate Quick-Start</title>
+          <script src="/bundle.js" />
+        </head>
 
-        React.DOM.body(null,
-          '--> body content will be added soon <--'
-        )
-      )
+        <body>
+          --> body content will be added soon <--
+        </body>
+      </html>
     );
   }
 });
 
 if (typeof window !== 'undefined') {
   window.onload = function() {
-    React.renderComponent(MyApp(), document);
+    React.render(<MyApp />, document);
   };
 }
 
@@ -81,7 +79,7 @@ Now we have the basic HTML chrome for our tiny little app.
 
 Next, we will create a LocaleSwitcher component which will be used to, well, switch locales. Here is the code to append to `client.js`:
 
-```js
+```jsx
 var LocaleSwitcher = React.createClass({
   handleChange: function(e) {
     counterpart.setLocale(e.target.value);
@@ -89,56 +87,50 @@ var LocaleSwitcher = React.createClass({
 
   render: function() {
     return (
-      React.DOM.p(null,
-        React.DOM.span(null, 'Switch Locale: '),
+      <p>
+        <span>Switch Locale:</span>
 
-        React.DOM.select(
-            { 
-              defaultValue: counterpart.getLocale(), 
-              onChange:     this.handleChange
-            }, 
-          React.DOM.option(null, 'en'),
-          React.DOM.option(null, 'de')
-        )
-      )
+        <select defaultValue={counterpart.getLocale()} onChange={this.handleChange}>
+          <option>en</option>
+          <option>de</option>
+        </select>
+      </p>
     );
   }
 });
 ```
 
-For demonstration purposes, we don't bother and hard-code the available locales. 
+For demonstration purposes, we don't bother and hard-code the available locales.
 
 Whenever the user selects a different locale from the drop-down, we correspondingly set the new drop-down's value as locale in the Counterpart library, which in turn triggers an event that our (soon to be integrated) Translate component listens to. As initially active value for the select element we specify Counterpart's current locale ("en" by default).
 
 Now add LocaleSwitcher as child of the empty body element of our MyApp component:
 
-```js
-        React.DOM.body(null,
-          LocaleSwitcher()
-        )
+```jsx
+        <body>
+          <LocaleSwitcher />
+        </body>
 ```
 
 Next, we create a Greeter component that is going to display a localized message which will greet you:
 
-```js
+```jsx
 var Greeter = React.createClass({
   render: function() {
-    return this.transferPropsTo(
-      Translate(null, 'example.greeting')
-    );
+    return <Translate {...this.props} content="example.greeting" />;
   }
 });
 ```
 
-In the component's render function, we simply transfer all incoming props to Translate (the component this repo is all about). As its only child we specify the string "example.greeting" which acts as the key into the translations dictionary of Counterpart.
+In the component's render function, we simply transfer all incoming props to Translate (the component this repo is all about). As `content` property we specify the string "example.greeting" which acts as the key into the translations dictionary of Counterpart.
 
-Now add the new Greeter component to the body element, provide a `name` prop holding your first name and a `component` prop which is set to `React.DOM.h1`:
+Now add the new Greeter component to the body element, provide a `name` prop holding your first name and a `component` prop which is set to "h1":
 
-```js
-        React.DOM.body(null,
-          LocaleSwitcher(),
-          Greeter({ name: 'Martin', component: React.DOM.h1 })
-        )
+```jsx
+        <body>
+          <LocaleSwitcher />
+          <Greeter name="Martin" component="h1" />
+        </body>
 ```
 
 The value of the `name` prop will be interpolated into the translation result. The `component` prop tells Translate which HTML tag to render as container element (a `<span>` by default).
@@ -177,8 +169,8 @@ Now open up `server.js` and add the following lines:
 
 var express     = require('express');
 var browserify  = require('connect-browserify');
-var render      = require('react').renderComponentToString;
-var App         = require('./client');
+var React       = require('react');
+var App         = React.createFactory(require('./client'));
 
 express()
   .use('/bundle.js', browserify.serve({
@@ -186,7 +178,7 @@ express()
     debug: true, watch: true
   }))
   .get('/', function(req, res, next) {
-    res.send(render(App()));
+    res.send(React.renderToString(App()));
   })
   .listen(3000, function() {
     console.log('Point your browser to http://localhost:3000');
@@ -203,13 +195,12 @@ $ node server.js
 
 It should tell you to point your browser to [http://localhost:3000][8]. There you will find the page greeting you. Observe that when switching locales the greeting message adjusts its text to the new locale without ever reloading the page or doing any ajax magic.
 
-Please take a look at this repo's `spec.js` file to see some more nice tricks. To become a master craftsman we encourage you to also read [Counterpart's README][7].
+Please take a look at this repo's `spec.js` file to see some more nice tricks like translating HTML element attributes (title, placeholder etc.). To become a master craftsman we encourage you to also read [Counterpart's README][7].
 
 
 ## An Advanced Example
 
-The code for a more sophisticated example can be found in the repo's `example` directory. You can clone this repository and run `make install example` and point your web browser to
-`http://localhost:3000`. In case you are too lazy for that, we also have a [live demo of the example app][4] on Heroku.
+The code for a more sophisticated example can be found in the repo's `example` directory. You can clone this repository and run `make install example` and point your web browser to `http://localhost:3000`. In case you are too lazy for that, we also have a [live demo of the example app][4] on Heroku.
 
 
 ## Contributing
