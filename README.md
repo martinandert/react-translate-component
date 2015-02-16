@@ -158,7 +158,7 @@ That's it for the application logic. To eventually see this working in a browser
 First, let's install some required dependencies and create a `server.js` file:
 
 ```bash
-$ npm install express connect-browserify --save
+$ npm install express connect-browserify reactify node-jsx --save
 $ touch server.js
 ```
 
@@ -169,13 +169,18 @@ Now open up `server.js` and add the following lines:
 
 var express     = require('express');
 var browserify  = require('connect-browserify');
+var reactify    = require('reactify');
 var React       = require('react');
-var App         = React.createFactory(require('./client'));
+
+require('node-jsx').install();
+
+var App = React.createFactory(require('./client'));
 
 express()
   .use('/bundle.js', browserify.serve({
     entry: __dirname + '/client',
-    debug: true, watch: true
+    debug: true, watch: true,
+    transforms: [reactify]
   }))
   .get('/', function(req, res, next) {
     res.send(React.renderToString(App()));
