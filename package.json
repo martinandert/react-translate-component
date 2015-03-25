@@ -31,20 +31,20 @@
     "object-assign": "^2.0.0"
   },
   "peerDependencies": {
-    "react": "^0.12.1",
+    "react": "^0.13.1",
     "counterpart": "^0.16.4",
-    "react-interpolate-component": "^0.6.2"
+    "react-interpolate-component": "^0.7.0"
   },
   "devDependencies": {
     "connect-browserify": "^3.2.1",
     "counterpart": "^0.16.4",
-    "express": "^4.10.5",
-    "jsxhint": "^0.8.1",
-    "mocha": "^2.0.1",
+    "express": "^4.12.3",
+    "jsxhint": "^0.13.2",
+    "mocha": "^2.2.1",
     "node-dev": "^2.6.0",
     "node-jsx": "^0.12.4",
-    "react": "^0.12.1",
-    "react-interpolate-component": "^0.6.2",
-    "reactify": "^0.17.1"
+    "react": "^0.13.1",
+    "react-interpolate-component": "^0.7.0",
+    "reactify": "^1.1.0"
   }
 }
