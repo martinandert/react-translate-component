@@ -2,31 +2,40 @@
 
 var React       = require('react');
 var Interpolate = require('react-interpolate-component');
-var counterpart = require('counterpart');
+var translator  = require('counterpart');
 var extend      = require('object-assign');
+
+var PropTypes = React.PropTypes;
+
+var translatorType = PropTypes.shape({
+  getLocale:        PropTypes.func,
+  onLocaleChange:   PropTypes.func,
+  offLocaleChange:  PropTypes.func,
+  translate:        PropTypes.func
+});
 
 var Translate = React.createClass({
   displayName: 'Translate',
 
   contextTypes: {
-    counterpart: React.PropTypes.object
+    translator: translatorType
   },
 
   propTypes: {
-    locale: React.PropTypes.string,
-    count:  React.PropTypes.number,
+    locale: PropTypes.string,
+    count:  PropTypes.number,
 
-    content: React.PropTypes.oneOfType([
-      React.PropTypes.string,
-      React.PropTypes.arrayOf(React.PropTypes.string)
+    content: PropTypes.oneOfType([
+      PropTypes.string,
+      PropTypes.arrayOf(PropTypes.string)
     ]),
 
-    scope: React.PropTypes.oneOfType([
-      React.PropTypes.string,
-      React.PropTypes.arrayOf(React.PropTypes.string)
+    scope: PropTypes.oneOfType([
+      PropTypes.string,
+      PropTypes.arrayOf(PropTypes.string)
     ]),
 
-    attributes: React.PropTypes.object
+    attributes: PropTypes.object
   },
 
   statics: {
@@ -38,20 +47,22 @@ var Translate = React.createClass({
   },
 
   getInitialState: function() {
-    return {
-      locale: (this.context.counterpart || counterpart).getLocale()
-    };
+    return { locale: this.getTranslator().getLocale() };
+  },
+
+  getTranslator: function() {
+    return this.context.translator || translator;
   },
 
   componentDidMount: function() {
     if (!this.props.locale) {
-      (this.context.counterpart || counterpart).onLocaleChange(this.localeChanged);
+      this.getTranslator().onLocaleChange(this.localeChanged);
     }
   },
 
   componentWillUnmount: function() {
     if (!this.props.locale) {
-      (this.context.counterpart || counterpart).offLocaleChange(this.localeChanged);
+      this.getTranslator().offLocaleChange(this.localeChanged);
     }
   },
 
@@ -59,12 +70,8 @@ var Translate = React.createClass({
     this.setState({ locale: newLocale });
   },
 
-  translate: function() {
-    var cp = this.context.counterpart || counterpart;
-    return cp.translate.apply(cp, arguments);
-  },
-
   render: function() {
+    var translator  = this.getTranslator();
     var textContent = Translate.textContentComponents.indexOf(this.props.component) > -1;
     var interpolate = textContent || this.props.unsafe === true;
     var props       = extend({ locale: this.state.locale }, this.props, { interpolate: interpolate });
@@ -72,7 +79,7 @@ var Translate = React.createClass({
     if (props.attributes) {
       for (var attribute in props.attributes) {
         if (props.attributes[attribute]) {
-          props[attribute] = this.translate(props.attributes[attribute], props);
+          props[attribute] = translator.translate(props.attributes[attribute], props);
         }
       }
 
@@ -80,7 +87,7 @@ var Translate = React.createClass({
     }
 
     if (props.content) {
-      var translation = this.translate(props.content, props);
+      var translation = translator.translate(props.content, props);
 
       delete props.content;
       delete props.locale;
@@ -104,3 +111,5 @@ module.exports = Translate;
 module.exports.translate = function(key, options) {
   return React.createElement(Translate, extend({}, options, { content: key }));
 };
+
+module.exports.translatorType = translatorType;

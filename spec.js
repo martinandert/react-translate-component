@@ -151,6 +151,41 @@ describe('The Translate component', function() {
 
     assert.matches(/^<span[^>]*>Click me!<\/span>$/, render(_t('submit_button.tooltip')));
   });
+
+  it('allows a translator to be passed via React\'s context', function() {
+    var Wrapper = React.createClass({
+      childContextTypes: {
+        translator: TranslClass.translatorType
+      },
+
+      getChildContext: function() {
+        return {
+          translator: this.props.translator
+        };
+      },
+
+      render: function() {
+        return Translate({ content: 'foo', attributes: { title: 'bar' } });
+      }
+    });
+
+    Wrapper = React.createFactory(Wrapper);
+
+    var markup;
+    var translator = new counterpart.Instance();
+    translator.registerTranslations('de', { foo: 'FOO-DE', bar: 'BAR-DE' });
+    translator.registerTranslations('en', { foo: 'FOO-EN', bar: 'BAR-EN' });
+
+    translator.setLocale('en');
+    markup = render(Wrapper({ translator: translator }));
+    assert.matches(/FOO-EN/, markup);
+    assert.matches(/BAR-EN/, markup);
+
+    translator.setLocale('de');
+    markup = render(Wrapper({ translator: translator }));
+    assert.matches(/FOO-DE/, markup);
+    assert.matches(/BAR-DE/, markup);
+  });
 });
 
 

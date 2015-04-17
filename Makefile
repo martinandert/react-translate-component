@@ -3,11 +3,11 @@ BIN = ./node_modules/.bin
 test: lint
 	@$(BIN)/mocha -t 5000 -b -R spec spec.js
 
-lint:
+lint: node_modules/
 	@$(BIN)/jsxhint index.js example/
 
-install:
-	npm install
+node_modules/:
+	@npm install
 
 example::
 	@$(BIN)/node-dev --no-deps example/server.js
