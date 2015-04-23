@@ -205,7 +205,7 @@ Please take a look at this repo's `spec.js` file to see some more nice tricks li
 
 ## Asynchronous Rendering on the Server-side
 
-The above example for `server.js` will not work when you're calling `React.renderToString(...)` within the callback of an async function and calling `counterpart.setLocale(...)` synchronously outside of that callback. This is because the Counterpart module is used as a singleton instance inside of the Translate component. See #6 for details.
+The above example for `server.js` will not work when you're calling `React.renderToString(...)` within the callback of an async function and calling `counterpart.setLocale(...)` synchronously outside of that callback. This is because the Counterpart module is used as a singleton instance inside of the Translate component. See PR [#6] for details.
 
 To fix this, create a wrapper component (or extend your root component) and pass an instance of Counterpart as React context. Here's an example:
 
