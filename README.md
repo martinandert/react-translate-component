@@ -203,6 +203,56 @@ It should tell you to point your browser to [http://localhost:3000][8]. There yo
 Please take a look at this repo's `spec.js` file to see some more nice tricks like translating HTML element attributes (title, placeholder etc.). To become a master craftsman we encourage you to also read [Counterpart's README][7].
 
 
+## Asynchronous Rendering on the Server-side
+
+The above example for `server.js` will not work when you're calling `React.renderToString(...)` within the callback of an async function and calling `counterpart.setLocale(...)` synchronously outside of that callback. This is because the Counterpart module is used as a singleton instance inside of the Translate component. See #6 for details.
+
+To fix this, create a wrapper component (or extend your root component) and pass an instance of Counterpart as React context. Here's an example:
+
+```js
+var http = require('http');
+var Translator = require('counterpart').Instance;
+var React = require('react');
+var Translate = require('react-translate-component');
+var MyApp = require('./my/components/App');
+
+var en = require('./my/locales/en');
+var de = require('./my/locales/de');
+
+var Wrapper = React.createClass({
+  childContextTypes: {
+    translator: Translate.translatorType
+  },
+
+  getChildContext: function() {
+    return {
+      translator: this.props.translator
+    };
+  },
+
+  render: function() {
+    return <MyApp data={this.props.data} />;
+  }
+});
+
+http.createServer(function(req, res) {
+  var queryData = url.parse(req.url, true).query;
+
+  var translator = new Translator();
+  translator.registerTranslations('en', en);
+  translator.registerTranslations('de', de);
+  translator.setLocale(req.locale || 'en');
+
+  doAsyncStuffHere(function(err, data) {
+    if (err) { return err; }
+
+    var html = React.renderToString(<Wrapper data={data} translator={translator} />);
+
+    res.write(html);
+  });
+}).listen(3000);
+```
+
 ## An Advanced Example
 
 The code for a more sophisticated example can be found in the repo's `example` directory. You can clone this repository and run `make install example` and point your web browser to `http://localhost:3000`. In case you are too lazy for that, we also have a [live demo of the example app][4] on Heroku.
