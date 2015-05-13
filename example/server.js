@@ -1,23 +1,18 @@
 'use strict';
 
-var express     = require('express');
-var browserify  = require('connect-browserify');
-var reactify    = require('reactify');
-var React       = require('react');
+var express = require('express');
+var React   = require('react');
 
 require('node-jsx').install();
 
-var App = React.createFactory(require('./client'));
+var App  = React.createFactory(require('./client'));
+var port = Number(process.env.PORT || 3000);
 
 express()
-  .use('/bundle.js', browserify.serve({
-    entry: __dirname + '/client',
-    debug: true, watch: true,
-    transforms: [reactify]
-  }))
+  .use('/assets', express.static(__dirname + '/assets'))
   .get('/', function(req, res, next) {
     res.send(React.renderToString(App()));
   })
-  .listen(3000, function() {
-    console.log('Point your browser to http://localhost:3000');
+  .listen(port, function() {
+    console.log('Point your browser to http://localhost:' + port);
   });

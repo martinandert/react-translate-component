@@ -1,0 +1,23 @@
+{
+  "undef": true,
+  "unused": "vars",
+  "asi": false,
+  "expr": true,
+  "globalstrict": true,
+  "newcap": false,
+  "globals": {
+    "window": false,
+    "require": false,
+    "process": false,
+    "module": false,
+    "exports": false,
+    "console": false,
+    "document": false,
+    "setTimeout": false,
+    "clearTimeout": false,
+    "setInterval": false,
+    "clearInterval": false,
+    "alert": false,
+    "__dirname": false
+  }
+}

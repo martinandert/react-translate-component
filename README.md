@@ -255,7 +255,7 @@ http.createServer(function(req, res) {
 
 ## An Advanced Example
 
-The code for a more sophisticated example can be found in the repo's `example` directory. You can clone this repository and run `make install example` and point your web browser to `http://localhost:3000`. In case you are too lazy for that, we also have a [live demo of the example app][4] on Heroku.
+The code for a more sophisticated example can be found in the repo's `example` directory. You can clone this repository and run `make install example` and point your web browser to `http://localhost:3000`. In case you are too lazy for that, we also have a [live demo of the example app][4].
 
 
 ## Contributing
@@ -282,7 +282,7 @@ Released under The MIT License.
 [1]: http://facebook.github.io/react/
 [2]: https://github.com/martinandert/counterpart
 [3]: https://github.com/martinandert/react-interpolate-component
-[4]: http://react-translate-component.herokuapp.com/
+[4]: http://react-translate-demo.martinandert.com/
 [5]: http://nodejs.org/
 [6]: https://www.npmjs.org/
 [7]: https://github.com/martinandert/counterpart#readme

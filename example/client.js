@@ -2,7 +2,7 @@
 
 var React       = require('react');
 var counterpart = require('counterpart');
-var Translate   = require('../');
+var Translate   = require('react-translate-component');
 
 // this is a counterpart-style convenience function that
 // returns a React component
@@ -113,13 +113,15 @@ var App = React.createClass({
   },
 
   render: function() {
+    var bundlePath = '/assets/bundle.' + (process.env.NODE_ENV === 'production' ? 'min.js' : 'js');
+
     return (
       <html>
         <head>
           <meta charSet="utf-8" />
           <title>React Translate Component</title>
           <meta name="viewport" content="width=device-width, initial-scale=1" />
-          <script src="/bundle.js"></script>
+          <script src={bundlePath} />
         </head>
 
         <body>
@@ -127,6 +129,14 @@ var App = React.createClass({
           <PeopleList people={this.props.people} />
           <SecondsPassed />
           <Translate locale="en" component="p" content="example.locale_prop_text" unsafe />
+
+          <hr style={{ marginTop: 100 }} />
+          <p style={{ fontSize: 'small' }}>
+            This demo showcases the {' '}
+            <a href="https://github.com/martinandert/react-translate-component">React Translate Component</a>.
+            You can find the source code for this example {' '}
+            <a href="https://github.com/martinandert/react-translate-component/tree/master/example">here</a>.
+          </p>
         </body>
       </html>
     );
