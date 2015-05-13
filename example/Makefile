@@ -17,4 +17,7 @@ webpack-live:
 live: webpack-live
 	@NODE_ENV=production node .
 
-.PHONY: lint webpack-dev dev webpack live
+publish:
+	cap production deploy deploy:restart
+
+.PHONY: lint webpack-dev dev webpack-live live publish
