@@ -7,6 +7,9 @@
   "engines": {
     "node": "0.12.x"
   },
+  "scripts": {
+    "postinstall": "if [ \"$NODE_ENV\" = production ]; then make webpack-live; fi"
+  },
   "dependencies": {
     "counterpart": "^0.16.7",
     "express": "^4.12.3",

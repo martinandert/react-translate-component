@@ -9,12 +9,12 @@ webpack-dev:
 	@$(BIN)/webpack --debug --devtool inline-source-map --output-pathinfo
 
 dev: webpack-dev
-	@$(BIN)/node-dev --no-deps server.js
+	@$(BIN)/node-dev --no-deps .
 
-webpack:
+webpack-live:
 	@NODE_ENV=production $(BIN)/webpack --optimize-occurence-order
 
-live: webpack
-	@NODE_ENV=production node server.js
+live: webpack-live
+	@NODE_ENV=production node .
 
 .PHONY: lint webpack-dev dev webpack live
