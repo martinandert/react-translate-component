@@ -1,9 +1,10 @@
 var assert      = require('assert');
 var React       = require('react');
+var ReactDOM    = require('react-dom/server');
 var counterpart = require('counterpart');
 var TranslClass = require('./');
 var Translate   = React.createFactory(TranslClass);
-var render      = React.renderToString;
+var render      = ReactDOM.renderToString;
 
 counterpart.registerTranslations('en', {
   test: {

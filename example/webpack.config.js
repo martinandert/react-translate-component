@@ -3,10 +3,7 @@
 var webpack = require('webpack');
 var bundleFile = 'bundle.js';
 
-var plugins = [
-  // require 'react/addons' when we require 'react'
-  new webpack.NormalModuleReplacementPlugin(/^react$/, 'react/addons'),
-];
+var plugins = [];
 
 if (process.env.NODE_ENV === 'production') {
   plugins.push(new webpack.optimize.UglifyJsPlugin({ comments: /<strip-all>/ }));

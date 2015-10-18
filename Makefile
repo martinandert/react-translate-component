@@ -9,9 +9,6 @@ lint: node_modules/
 node_modules/:
 	@npm install
 
-example::
-	@$(BIN)/node-dev --no-deps example/server.js
-
 release-patch: test
 	@$(call release,patch)
 

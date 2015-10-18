@@ -1,6 +1,7 @@
 'use strict';
 
 var React       = require('react');
+var ReactDOM    = require('react-dom');
 var counterpart = require('counterpart');
 var Translate   = require('react-translate-component');
 
@@ -147,7 +148,7 @@ if (typeof window !== 'undefined') {
   window.React = React;
 
   window.onload = function() {
-    React.render(<App />, document);
+    ReactDOM.render(<App />, document);
   };
 }
 

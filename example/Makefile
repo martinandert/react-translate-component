@@ -9,7 +9,7 @@ webpack-dev:
 	@$(BIN)/webpack --debug --devtool inline-source-map --output-pathinfo
 
 dev: webpack-dev
-	@$(BIN)/node-dev --no-deps .
+	@$(BIN)/node-dev .
 
 webpack-live:
 	@NODE_ENV=production $(BIN)/webpack --optimize-occurence-order
