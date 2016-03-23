@@ -9,7 +9,8 @@ var render      = ReactDOM.renderToString;
 counterpart.registerTranslations('en', {
   test: {
     greeting: 'Hello, %(name)s!',
-    greeting_html: 'Hello, <b>%(name)s</b>!'
+    greeting_html: 'Hello, <b>%(name)s</b>!',
+    tooltip: 'Hey there, %(name)s!'
   },
 
   search_input: {
@@ -26,7 +27,8 @@ counterpart.registerTranslations('en', {
 counterpart.registerTranslations('de', {
   test: {
     greeting: 'Hallo %(name)s!',
-    greeting_html: 'Hallo <b>%(name)s</b>!'
+    greeting_html: 'Hallo <b>%(name)s</b>!',
+    tooltip: 'Wie geht\'s, %(name)s?'
   },
 
   search_input: {
@@ -140,13 +142,16 @@ describe('The Translate component', function() {
 
   it('provides a counterpart-inspired convenience method for building components', function() {
     var _t = TranslClass.translate;
-    var component = _t('greeting', { scope: 'test', name: 'Martin', unsafe: true });
+    var component = _t('greeting', {
+      scope: 'test', name: 'Martin', unsafe: true,
+      attributes: { title: 'tooltip' }
+    });
 
     assert(React.isValidElement(component));
 
     counterpart.withLocale('de', function() {
       var markup = render(component);
-      assert.matches(/^<span[^>]*>Hallo Martin!<\/span>$/, markup);
+      assert.matches(/^<span\s.*?title="Wie geht&#x27;s, Martin\?"\s[^>]*>Hallo Martin!<\/span>$/, markup);
       assert.doesNotMatch(/\sscope="test"/, markup);
     });
 
