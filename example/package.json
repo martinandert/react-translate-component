@@ -12,8 +12,8 @@
     "express": "^4.12.3",
     "logfmt": "^1.2.0",
     "node-jsx": "^0.13.3",
-    "react": "^0.14.0",
-    "react-dom": "^0.14.0",
+    "react": "^15.0.0",
+    "react-dom": "^15.0.0",
     "react-interpolate-component": "^0.8.0",
     "react-translate-component": "^0.10.0"
   },
