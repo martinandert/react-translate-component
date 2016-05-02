@@ -43,8 +43,8 @@
     "mocha": "^2.2.1",
     "node-dev": "^2.6.0",
     "node-jsx": "^0.13.3",
-    "react": "^0.14.0",
-    "react-dom": "^0.14.0",
+    "react": "^15.0.0",
+    "react-dom": "^15.0.0",
     "react-interpolate-component": "^0.8.0",
     "reactify": "^1.1.0"
   }
