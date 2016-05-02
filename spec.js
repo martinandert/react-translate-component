@@ -4,7 +4,7 @@ var ReactDOM    = require('react-dom/server');
 var counterpart = require('counterpart');
 var TranslClass = require('./');
 var Translate   = React.createFactory(TranslClass);
-var render      = ReactDOM.renderToString;
+var render      = ReactDOM.renderToStaticMarkup;
 
 counterpart.registerTranslations('en', {
   test: {
@@ -57,15 +57,15 @@ describe('The Translate component', function() {
 
   it('translates stuff properly', function() {
     counterpart.withLocale('en', function() {
-      assert.matches(/Hello, <\/span><span[^>]*>Martin/, render(Translate({ name: 'Martin', content: 'test.greeting' })));
-      assert.matches(/Hello, <\/span><span[^>]*>Martin/, render(Translate({ name: 'Martin', content: ['test', 'greeting'] })));
+      assert.matches(/Hello, Martin/, render(Translate({ name: 'Martin', content: 'test.greeting' })));
+      assert.matches(/Hello, Martin/, render(Translate({ name: 'Martin', content: ['test', 'greeting'] })));
 
       assert.matches(/Hello, <b>Martin<\/b>!/, render(Translate({ name: 'Martin', unsafe: true, content: 'test.greeting_html' })));
-      assert.matches(/Hello, <\/span><b[^>]*>Martin<\/b><span[^>]*>!/, render(Translate({ name: React.DOM.b(null, 'Martin'), content: 'test.greeting' })));
+      assert.matches(/Hello, <b>Martin<\/b>!/, render(Translate({ name: React.DOM.b(null, 'Martin'), content: 'test.greeting' })));
 
       var propsWithScope = { name: 'Martin', scope: ['test'], content: 'greeting' };
 
-      assert.matches(/Hello, <\/span><span[^>]*>Martin/, render(Translate(propsWithScope)));
+      assert.matches(/Hello, Martin/, render(Translate(propsWithScope)));
       assert.doesNotMatch(/\sscope="test"/, render(Translate(propsWithScope)));
     });
   });
@@ -151,7 +151,7 @@ describe('The Translate component', function() {
 
     counterpart.withLocale('de', function() {
       var markup = render(component);
-      assert.matches(/^<span\s.*?title="Wie geht&#x27;s, Martin\?"\s[^>]*>Hallo Martin!<\/span>$/, markup);
+      assert.matches(/^<span\s.*?title="Wie geht&#x27;s, Martin\?"[^>]*>Hallo Martin!<\/span>$/, markup);
       assert.doesNotMatch(/\sscope="test"/, markup);
     });
 
