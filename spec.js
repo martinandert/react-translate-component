@@ -42,8 +42,8 @@ counterpart.registerTranslations('de', {
   }
 });
 
-// raise React console warnings as failed assertions
-console.warn = function(message) {
+// hack: raise React console warnings as failed assertions
+console.error = function(message) {
   assert(false, message);
 };
 

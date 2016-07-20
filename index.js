@@ -97,11 +97,14 @@ var Translate = React.createClass({
 
       return React.createElement(Interpolate, props, translation);
     } else {
+      var component = props.component;
+
       delete props.locale;
       delete props.scope;
       delete props.interpolate;
+      delete props.component;
 
-      return React.createElement(props.component, props);
+      return React.createElement(component, props);
     }
   }
 });
