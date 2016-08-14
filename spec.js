@@ -45,9 +45,9 @@ counterpart.registerTranslations('de', {
 });
 
 // hack: raise React console warnings as failed assertions
-// console.error = function(message) {
-//   assert(false, message);
-// };
+console.error = function(message) {
+  assert(false, message);
+};
 
 describe('The Translate component', function() {
   it('transfers props', function() {
