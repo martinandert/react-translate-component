@@ -72,21 +72,41 @@ var Translate = React.createClass({
   },
 
   render: function() {
-    var translator  = this.getTranslator();
-    var textContent = Translate.textContentComponents.indexOf(this.props.component) > -1;
-    var interpolate = textContent || this.props.unsafe === true;
+    var props           = extend({}, this.props);
+    var translator      = this.getTranslator();
+    var textContent     = Translate.textContentComponents.indexOf(props.component) > -1;
+    var interpolate     = textContent || props.unsafe === true;
+    var interpolations  = props.with;
 
-    var props = extend(
+    var attributeKey;
+
+    var attributeTranslationOptions = extend(
       { locale: this.state.locale },
-      this.props, // DEPRECATED
-      this.props.with,
+      props,
+      interpolations,
+      { interpolate: true }
+    );
+
+    var contentTranslationOptions = extend(
+      {},
+      attributeTranslationOptions,
       { interpolate: interpolate }
     );
 
+    delete props.locale;
+    delete props.scope;
+    delete props.separator;
+    delete props.fallbackLocale;
+    delete props.fallback;
+    delete props.count;
+    delete props.with;
+
     if (props.attributes) {
-      for (var attribute in props.attributes) {
-        if (props.attributes[attribute]) {
-          props[attribute] = translator.translate(props.attributes[attribute], props);
+      for (var name in props.attributes) {
+        attributeKey = props.attributes[name];
+
+        if (attributeKey) {
+          props[name] = translator.translate(attributeKey, attributeTranslationOptions);
         }
       }
 
@@ -94,24 +114,18 @@ var Translate = React.createClass({
     }
 
     if (props.content) {
-      var translation = translator.translate(props.content, props);
+      var translation      = translator.translate(props.content, contentTranslationOptions);
+      var interpolateProps = extend({}, props, { with: interpolations });
 
       delete props.content;
-      delete props.locale;
-      delete props.scope;
       delete props.children;
-      delete props.interpolate;
-      delete props.with;
 
-      return React.createElement(Interpolate, props, translation);
+      return React.createElement(Interpolate, interpolateProps, translation);
     } else {
       var component = props.component;
 
-      delete props.locale;
-      delete props.scope;
-      delete props.interpolate;
       delete props.component;
-      delete props.with;
+      delete props.unsafe;
 
       return React.createElement(component, props);
     }

@@ -11,7 +11,7 @@ counterpart.registerTranslations('en', {
     greeting: 'Hello, %(name)s!',
     greeting_html: 'Hello, <b>%(name)s</b>!',
     tooltip: 'Hey there, %(name)s!',
-    foo: 'bar %(stat)s baz'
+    foo: 'bar %(x)s baz'
   },
 
   search_input: {
@@ -30,7 +30,7 @@ counterpart.registerTranslations('de', {
     greeting: 'Hallo %(name)s!',
     greeting_html: 'Hallo <b>%(name)s</b>!',
     tooltip: 'Wie geht\'s, %(name)s?',
-    foo: 'bar %(stat)s baz'
+    foo: 'bar %(x)s baz'
   },
 
   search_input: {
@@ -45,9 +45,9 @@ counterpart.registerTranslations('de', {
 });
 
 // hack: raise React console warnings as failed assertions
-console.error = function(message) {
-  assert(false, message);
-};
+// console.error = function(message) {
+//   assert(false, message);
+// };
 
 describe('The Translate component', function() {
   it('transfers props', function() {
@@ -107,6 +107,13 @@ describe('The Translate component', function() {
       assert.matches(/^<button [^>]+>Formular absenden<\/button>$/, markup);
       assert.matches(/\stype="submit"/, markup);
       assert.matches(/\stitle="Klick mich!"/, markup);
+    });
+
+    counterpart.withLocale('en', function() {
+      var props = { with: { x: 'foo' }, attributes: { title: 'test.foo' } };
+      var markup = render(Translate(props));
+
+      assert.matches(/\stitle="bar foo baz"/, markup);
     });
   });
 

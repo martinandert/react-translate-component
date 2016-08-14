@@ -33,7 +33,7 @@
   "peerDependencies": {
     "react": "^15.0.0",
     "counterpart": "^0.17.0",
-    "react-interpolate-component": "^0.9.0"
+    "react-interpolate-component": "^0.10.0"
   },
   "devDependencies": {
     "connect-browserify": "^4.0.0",
@@ -45,7 +45,7 @@
     "node-jsx": "^0.13.3",
     "react": "^15.0.0",
     "react-dom": "^15.0.0",
-    "react-interpolate-component": "^0.9.0",
+    "react-interpolate-component": "^0.10.0",
     "reactify": "^1.1.0"
   }
 }
