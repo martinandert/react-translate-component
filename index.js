@@ -35,7 +35,8 @@ var Translate = React.createClass({
       PropTypes.arrayOf(PropTypes.string)
     ]),
 
-    attributes: PropTypes.object
+    attributes: PropTypes.object,
+    with: PropTypes.object
   },
 
   statics: {
@@ -74,7 +75,13 @@ var Translate = React.createClass({
     var translator  = this.getTranslator();
     var textContent = Translate.textContentComponents.indexOf(this.props.component) > -1;
     var interpolate = textContent || this.props.unsafe === true;
-    var props       = extend({ locale: this.state.locale }, this.props, { interpolate: interpolate });
+
+    var props = extend(
+      { locale: this.state.locale },
+      this.props, // DEPRECATED
+      this.props.with,
+      { interpolate: interpolate }
+    );
 
     if (props.attributes) {
       for (var attribute in props.attributes) {
@@ -94,6 +101,7 @@ var Translate = React.createClass({
       delete props.scope;
       delete props.children;
       delete props.interpolate;
+      delete props.with;
 
       return React.createElement(Interpolate, props, translation);
     } else {
@@ -103,6 +111,7 @@ var Translate = React.createClass({
       delete props.scope;
       delete props.interpolate;
       delete props.component;
+      delete props.with;
 
       return React.createElement(component, props);
     }

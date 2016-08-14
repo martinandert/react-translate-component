@@ -10,7 +10,8 @@ counterpart.registerTranslations('en', {
   test: {
     greeting: 'Hello, %(name)s!',
     greeting_html: 'Hello, <b>%(name)s</b>!',
-    tooltip: 'Hey there, %(name)s!'
+    tooltip: 'Hey there, %(name)s!',
+    foo: 'bar %(stat)s baz'
   },
 
   search_input: {
@@ -28,7 +29,8 @@ counterpart.registerTranslations('de', {
   test: {
     greeting: 'Hallo %(name)s!',
     greeting_html: 'Hallo <b>%(name)s</b>!',
-    tooltip: 'Wie geht\'s, %(name)s?'
+    tooltip: 'Wie geht\'s, %(name)s?',
+    foo: 'bar %(stat)s baz'
   },
 
   search_input: {
@@ -56,6 +58,21 @@ describe('The Translate component', function() {
   });
 
   it('translates stuff properly', function() {
+    counterpart.withLocale('en', function() {
+      assert.matches(/Hello, Martin/, render(Translate({ with: { name: 'Martin' }, content: 'test.greeting' })));
+      assert.matches(/Hello, Martin/, render(Translate({ with: { name: 'Martin' }, content: ['test', 'greeting'] })));
+
+      assert.matches(/Hello, <b>Martin<\/b>!/, render(Translate({ with: { name: 'Martin' }, unsafe: true, content: 'test.greeting_html' })));
+      assert.matches(/Hello, <b>Martin<\/b>!/, render(Translate({ with: { name: React.DOM.b(null, 'Martin') }, content: 'test.greeting' })));
+
+      var propsWithScope = { with: { name: 'Martin' }, scope: ['test'], content: 'greeting' };
+
+      assert.matches(/Hello, Martin/, render(Translate(propsWithScope)));
+      assert.doesNotMatch(/\sscope="test"/, render(Translate(propsWithScope)));
+    });
+  });
+
+  it('translates stuff properly using the deprecated way of providing interpolations', function() {
     counterpart.withLocale('en', function() {
       assert.matches(/Hello, Martin/, render(Translate({ name: 'Martin', content: 'test.greeting' })));
       assert.matches(/Hello, Martin/, render(Translate({ name: 'Martin', content: ['test', 'greeting'] })));
@@ -105,15 +122,15 @@ describe('The Translate component', function() {
 
   it('respects Counterpart\'s current locale', function() {
     counterpart.withLocale('de', function() {
-      assert.matches(/Hallo/, render(Translate({ name: 'Martin', content: 'test.greeting' })));
-      assert.doesNotMatch(/^missing translation:/, render(Translate({ name: 'Martin' }, 'test.greeting')));
+      assert.matches(/Hallo/, render(Translate({ with: { name: 'Martin' }, content: 'test.greeting' })));
+      assert.doesNotMatch(/^missing translation:/, render(Translate({ with: { name: 'Martin' } }, 'test.greeting')));
     });
   });
 
   it('respects Counterpart\'s current scope', function() {
     counterpart.withScope('test', function() {
-      assert.matches(/Hello/, render(Translate({ name: 'Martin', content: 'greeting' })));
-      assert.doesNotMatch(/^missing translation:/, render(Translate({ name: 'Martin', content: 'greeting' })));
+      assert.matches(/Hello/, render(Translate({ with: { name: 'Martin' }, content: 'greeting' })));
+      assert.doesNotMatch(/^missing translation:/, render(Translate({ with: { name: 'Martin' }, content: 'greeting' })));
     });
   });
 
@@ -121,7 +138,7 @@ describe('The Translate component', function() {
     it('does not render HTML markup inside that component', function() {
       // TODO add special treatment for <textarea>
       ['option', 'title'].forEach(function(tagName) {
-        var props = { component: tagName, name: 'Martin', content: 'test.greeting' };
+        var props = { component: tagName, with: { name: 'Martin' }, content: 'test.greeting' };
         var markup = render(Translate(props));
 
         assert.matches(new RegExp('^<' + tagName + '[^>]*>[^<>]*<\/' + tagName + '>$'), markup);
@@ -131,7 +148,7 @@ describe('The Translate component', function() {
 
   describe('with the `locale` prop explicitly set', function() {
     it('disrespects the "global" locale', function() {
-      var props = { locale: 'de', name: 'Martin', component: 'title', content: 'test.greeting' };
+      var props = { locale: 'de', with: { name: 'Martin' }, component: 'title', content: 'test.greeting' };
       var markup = render(Translate(props));
 
       counterpart.withLocale('en', function() {
@@ -143,7 +160,7 @@ describe('The Translate component', function() {
   it('provides a counterpart-inspired convenience method for building components', function() {
     var _t = TranslClass.translate;
     var component = _t('greeting', {
-      scope: 'test', name: 'Martin', unsafe: true,
+      scope: 'test', with: { name: 'Martin' }, unsafe: true,
       attributes: { title: 'tooltip' }
     });
 

@@ -124,16 +124,16 @@ var Greeter = React.createClass({
 
 In the component's render function, we simply transfer all incoming props to Translate (the component this repo is all about). As `content` property we specify the string "example.greeting" which acts as the key into the translations dictionary of Counterpart.
 
-Now add the new Greeter component to the body element, provide a `name` prop holding your first name and a `component` prop which is set to "h1":
+Now add the new Greeter component to the body element, provide a `with` prop holding the interpolations (your first name in this case) and a `component` prop which is set to "h1":
 
 ```jsx
         <body>
           <LocaleSwitcher />
-          <Greeter name="Martin" component="h1" />
+          <Greeter with={{ name: "Martin" }} component="h1" />
         </body>
 ```
 
-The value of the `name` prop will be interpolated into the translation result. The `component` prop tells Translate which HTML tag to render as container element (a `<span>` by default).
+The value of the `name` key will be interpolated into the translation result. The `component` prop tells Translate which HTML tag to render as container element (a `<span>` by default).
 
 All that's left to do is to add the actual translations. You do so by calling the `registerTranslations` function of Counterpart. Add this to `client.js`:
 
@@ -151,7 +151,7 @@ counterpart.registerTranslations('de', {
 });
 ```
 
-In the translations above we defined placeholders (in sprintf's named arguments syntax) which will be interpolated with the value of the `name` prop we gave to the Greeter component.
+In the translations above we defined placeholders (in sprintf's named arguments syntax) which will be interpolated with the value of the `name` key we gave to the Greeter component via the `with` prop.
 
 That's it for the application logic. To eventually see this working in a browser, we need to create the server-side code that will be executed by Node.js.
 
