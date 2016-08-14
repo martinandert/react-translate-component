@@ -15,7 +15,7 @@
     "react": "^15.3.0",
     "react-dom": "^15.3.0",
     "react-interpolate-component": "^0.10.0",
-    "react-translate-component": "^0.12.1"
+    "react-translate-component": "^0.12.2"
   },
   "devDependencies": {
     "jsx-loader": "^0.13.2",
