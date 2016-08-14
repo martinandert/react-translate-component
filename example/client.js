@@ -59,13 +59,13 @@ var PeopleList = React.createClass({
     var items = this.props.people.map(function(person, index) {
       var name = <PersonName name={person.name} />;
 
-      var props = {
-        key:        'p-' + index,
-        firstName:  name,
-        count:      person.age
-      };
-
-      return <Translate component="li" className="person" scope="example" {...props} content="person_age_sentence" />;
+      return (
+        <Translate key={'p-' + index}
+          component="li" className="person"
+          scope="example" content="person_age_sentence"
+          with={{ firstName: name, count: person.age }}
+        />
+      );
     }, this);
 
     return (
@@ -97,7 +97,7 @@ var SecondsPassed = React.createClass({
   },
 
   render: function() {
-    return <Translate component="p" count={this.state.seconds} content="example.seconds_passed" unsafe />;
+    return <Translate component="p" with={{ count: this.state.seconds }} content="example.seconds_passed" unsafe />;
   }
 });
 
