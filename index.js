@@ -117,8 +117,8 @@ var Translate = React.createClass({
       var translation      = translator.translate(props.content, contentTranslationOptions);
       var interpolateProps = extend({}, props, { with: interpolations });
 
-      delete props.content;
-      delete props.children;
+      delete interpolateProps.content;
+      delete interpolateProps.children;
 
       return React.createElement(Interpolate, interpolateProps, translation);
     } else {
