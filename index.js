@@ -134,6 +134,10 @@ module.exports.translate = function(key, options) {
 
 module.exports.translatorType = translatorType;
 
+module.exports.getLocale = translator.getLocale.bind(translator);
+module.exports.setLocale = translator.setLocale.bind(translator);
+module.exports.registerTranslations = translator.registerTranslations.bind(translator);
+
 function withTranslations(DecoratedComponent, translations) {
   if (!translations) {
     return function(decoratedComponent) {
