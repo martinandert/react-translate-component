@@ -216,6 +216,30 @@ describe('The Translate component', function() {
     assert.matches(/FOO-DE/, markup);
     assert.matches(/BAR-DE/, markup);
   });
+
+  it('provides a withTranslations decorator', function() {
+    function test(Component) {
+      var markup;
+      var Component = React.createFactory(Component);
+
+      markup = render(Component({ locale: 'en' }));
+      assert.matches(/FOO-EN/, markup);
+
+      markup = render(Component({ locale: 'de' }));
+      assert.matches(/FOO-DE/, markup);
+    }
+
+    var withTranslations = TranslClass.withTranslations;
+
+    var Component = React.createClass({
+      render: function() {
+        return Translate({ content: 'foo', locale: this.props.locale });
+      }
+    });
+
+    test(withTranslations({ de: { foo: 'FOO-DE' }, en: { foo: 'FOO-EN' } })(Component));
+    test(withTranslations(Component, { de: { foo: 'FOO-DE' }, en: { foo: 'FOO-EN' } }));
+  });
 });
 
 

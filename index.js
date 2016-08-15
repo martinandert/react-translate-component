@@ -14,27 +14,24 @@ var translatorType = PropTypes.shape({
   translate:        PropTypes.func
 });
 
+var keyType = PropTypes.oneOfType([
+  PropTypes.string,
+  PropTypes.arrayOf(PropTypes.string)
+]);
+
 var Translate = React.createClass({
   displayName: 'Translate',
 
   contextTypes: {
-    translator: translatorType
+    translator: translatorType,
+    scope: keyType
   },
 
   propTypes: {
     locale: PropTypes.string,
     count:  PropTypes.number,
-
-    content: PropTypes.oneOfType([
-      PropTypes.string,
-      PropTypes.arrayOf(PropTypes.string)
-    ]),
-
-    scope: PropTypes.oneOfType([
-      PropTypes.string,
-      PropTypes.arrayOf(PropTypes.string)
-    ]),
-
+    content: keyType,
+    scope: keyType,
     attributes: PropTypes.object,
     with: PropTypes.object
   },
@@ -81,7 +78,7 @@ var Translate = React.createClass({
     var attributeKey;
 
     var attributeTranslationOptions = extend(
-      { locale: this.state.locale },
+      { locale: this.state.locale, scope: this.context.scope },
       props,
       interpolations,
       { interpolate: true }
@@ -95,9 +92,6 @@ var Translate = React.createClass({
 
     delete props.locale;
     delete props.scope;
-    delete props.separator;
-    delete props.fallbackLocale;
-    delete props.fallback;
     delete props.count;
     delete props.with;
 
@@ -139,3 +133,45 @@ module.exports.translate = function(key, options) {
 };
 
 module.exports.translatorType = translatorType;
+
+function withTranslations(DecoratedComponent, translations) {
+  if (!translations) {
+    return function(decoratedComponent) {
+      return withTranslations(decoratedComponent, DecoratedComponent);
+    };
+  }
+
+  var displayName =
+    DecoratedComponent.displayName ||
+    DecoratedComponent.name ||
+    'Component';
+
+  for (var locale in translations) {
+    var localeTranslations = translations[locale];
+    var scopedTranslations = {};
+
+    scopedTranslations[displayName] = localeTranslations;
+
+    translator.registerTranslations(locale, scopedTranslations);
+  }
+
+  return React.createClass({
+    displayName: displayName + 'WithTranslations',
+
+    childContextTypes: {
+      scope: keyType
+    },
+
+    getChildContext: function() {
+      return {
+        scope: displayName
+      };
+    },
+
+    render: function() {
+      return React.createElement(DecoratedComponent, this.props);
+    }
+  });
+}
+
+module.exports.withTranslations = withTranslations;
