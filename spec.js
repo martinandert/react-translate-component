@@ -240,6 +240,24 @@ describe('The Translate component', function() {
     test(withTranslations({ de: { foo: 'FOO-DE' }, en: { foo: 'FOO-EN' } })(Component));
     test(withTranslations(Component, { de: { foo: 'FOO-DE' }, en: { foo: 'FOO-EN' } }));
   });
+
+  it('can register and de-register an onLocaleChange listener', function() {
+    var setLocale = TranslClass.setLocale;
+
+    function onLocaleChangeListener(expectedLocale, newLocale) {
+      assert.equal(newLocale, expectedLocale);
+    }
+
+    var cb = onLocaleChangeListener.bind(null, 'de');
+    TranslClass.onLocaleChange(cb);
+    setLocale('de');
+    TranslClass.offLocaleChange(cb);
+
+    cb = onLocaleChangeListener.bind(null, 'en');
+    TranslClass.onLocaleChange(cb);
+    setLocale('en');
+    TranslClass.offLocaleChange(cb);
+  });
 });
 
 

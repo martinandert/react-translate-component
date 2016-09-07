@@ -136,6 +136,8 @@ module.exports.translatorType = translatorType;
 
 module.exports.getLocale = translator.getLocale.bind(translator);
 module.exports.setLocale = translator.setLocale.bind(translator);
+module.exports.onLocaleChange = translator.onLocaleChange.bind(translator);
+module.exports.offLocaleChange = translator.offLocaleChange.bind(translator);
 module.exports.registerTranslations = translator.registerTranslations.bind(translator);
 
 function withTranslations(DecoratedComponent, translations) {
