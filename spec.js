@@ -141,6 +141,10 @@ describe('The Translate component', function() {
     });
   });
 
+  it('utilizes the fallback prop if translation is missing', function() {
+    assert.matches(/foo/, render(Translate({ content: 'mis.sing', fallback: 'foo' })));
+  });
+
   describe('with the `component` prop set to a "text-only" React component', function() {
     it('does not render HTML markup inside that component', function() {
       // TODO add special treatment for <textarea>

@@ -94,6 +94,7 @@ var Translate = React.createClass({
     delete props.scope;
     delete props.count;
     delete props.with;
+    delete props.fallback;
 
     if (props.attributes) {
       for (var name in props.attributes) {

@@ -1,4 +1,5 @@
 lib-cov
+ng
 *.seed
 *.log
 *.csv
