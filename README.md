@@ -25,13 +25,13 @@ $ touch client.js
 $ npm init                   # accept all defaults here
 ```
 
-Next, add a dependency to our Translate component:
+Next, add the dependencies our little project requires:
 
 ```bash
-$ npm install react-translate-component --save
+$ npm install react counterpart react-interpolate-component react-translate-component --save
 ```
 
-This also installs React and Counterpart because these are configured as a peer dependencies.
+The `react`, `counterpart` and `react-interpolate-component` packages are peer dependencies of `react-translate-component` and need to be installed along-side of it.
 
 We will put our application logic into `client.js`. Open the file in your favorite editor and add the following lines:
 
