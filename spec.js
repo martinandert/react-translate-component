@@ -1,10 +1,11 @@
-var assert      = require('assert');
-var React       = require('react');
-var ReactDOM    = require('react-dom/server');
+var assert = require('assert');
+var React = require('react');
+var ReactDOM = require('react-dom/server');
+var createReactClass = require('create-react-class');
 var counterpart = require('counterpart');
-var TranslClass = require('./');
-var Translate   = React.createFactory(TranslClass);
-var render      = ReactDOM.renderToStaticMarkup;
+var TranslateClass = require('./');
+var Translate = React.createFactory(TranslateClass);
+var render = ReactDOM.renderToStaticMarkup;
 
 counterpart.registerTranslations('en', {
   test: {
@@ -169,7 +170,7 @@ describe('The Translate component', function() {
   });
 
   it('provides a counterpart-inspired convenience method for building components', function() {
-    var _t = TranslClass.translate;
+    var _t = TranslateClass.translate;
     var component = _t('greeting', {
       scope: 'test', with: { name: 'Martin' }, unsafe: true,
       attributes: { title: 'tooltip' }
@@ -187,9 +188,9 @@ describe('The Translate component', function() {
   });
 
   it('allows a translator to be passed via React\'s context', function() {
-    var Wrapper = React.createClass({
+    var Wrapper = createReactClass({
       childContextTypes: {
-        translator: TranslClass.translatorType
+        translator: TranslateClass.translatorType
       },
 
       getChildContext: function() {
@@ -233,9 +234,9 @@ describe('The Translate component', function() {
       assert.matches(/FOO-DE/, markup);
     }
 
-    var withTranslations = TranslClass.withTranslations;
+    var withTranslations = TranslateClass.withTranslations;
 
-    var Component = React.createClass({
+    var Component = createReactClass({
       render: function() {
         return Translate({ content: 'foo', locale: this.props.locale });
       }
@@ -246,21 +247,21 @@ describe('The Translate component', function() {
   });
 
   it('can register and de-register an onLocaleChange listener', function() {
-    var setLocale = TranslClass.setLocale;
+    var setLocale = TranslateClass.setLocale;
 
     function onLocaleChangeListener(expectedLocale, newLocale) {
       assert.equal(newLocale, expectedLocale);
     }
 
     var cb = onLocaleChangeListener.bind(null, 'de');
-    TranslClass.onLocaleChange(cb);
+    TranslateClass.onLocaleChange(cb);
     setLocale('de');
-    TranslClass.offLocaleChange(cb);
+    TranslateClass.offLocaleChange(cb);
 
     cb = onLocaleChangeListener.bind(null, 'en');
-    TranslClass.onLocaleChange(cb);
+    TranslateClass.onLocaleChange(cb);
     setLocale('en');
-    TranslClass.offLocaleChange(cb);
+    TranslateClass.offLocaleChange(cb);
   });
 });
 

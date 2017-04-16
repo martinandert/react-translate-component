@@ -1,11 +1,11 @@
 'use strict';
 
-var React       = require('react');
+var React = require('react');
+var PropTypes = require('prop-types');
+var createReactClass = require('create-react-class');
 var Interpolate = require('react-interpolate-component');
-var translator  = require('counterpart');
-var extend      = require('object-assign');
-
-var PropTypes = React.PropTypes;
+var translator = require('counterpart');
+var extend = require('object-assign');
 
 var translatorType = PropTypes.shape({
   getLocale:        PropTypes.func,
@@ -19,7 +19,7 @@ var keyType = PropTypes.oneOfType([
   PropTypes.arrayOf(PropTypes.string)
 ]);
 
-var Translate = React.createClass({
+var Translate = createReactClass({
   displayName: 'Translate',
 
   contextTypes: {
@@ -162,7 +162,7 @@ function withTranslations(DecoratedComponent, translations) {
     translator.registerTranslations(locale, scopedTranslations);
   }
 
-  return React.createClass({
+  return createReactClass({
     displayName: displayName + 'WithTranslations',
 
     childContextTypes: {

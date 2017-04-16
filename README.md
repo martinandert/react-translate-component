@@ -40,6 +40,7 @@ We will put our application logic into `client.js`. Open the file in your favori
 
 var counterpart = require('counterpart');
 var React       = require('react');
+var ReactDOM    = require('react-dom');
 var Translate   = require('react-translate-component');
 ```
 
@@ -48,8 +49,8 @@ This loads the localization library, React and our Translate component.
 Let's write our entry-point React component. Add the following code to the file:
 
 ```jsx
-var MyApp = React.createClass({
-  render: function() {
+class MyApp extends React.Component {
+  render() {
     return (
       <html>
         <head>
@@ -64,11 +65,11 @@ var MyApp = React.createClass({
       </html>
     );
   }
-});
+}
 
 if (typeof window !== 'undefined') {
   window.onload = function() {
-    React.render(<MyApp />, document);
+    ReactDOM.render(<MyApp />, document);
   };
 }
 
@@ -80,12 +81,12 @@ Now we have the basic HTML chrome for our tiny little app.
 Next, we will create a LocaleSwitcher component which will be used to, well, switch locales. Here is the code to append to `client.js`:
 
 ```jsx
-var LocaleSwitcher = React.createClass({
-  handleChange: function(e) {
+class LocaleSwitcher extends React.Component {
+  handleChange(e) {
     counterpart.setLocale(e.target.value);
-  },
+  }
 
-  render: function() {
+  render() {
     return (
       <p>
         <span>Switch Locale:</span>
@@ -97,7 +98,7 @@ var LocaleSwitcher = React.createClass({
       </p>
     );
   }
-});
+}
 ```
 
 For demonstration purposes, we don't bother and hard-code the available locales.
@@ -115,11 +116,11 @@ Now add LocaleSwitcher as child of the empty body element of our MyApp component
 Next, we create a Greeter component that is going to display a localized message which will greet you:
 
 ```jsx
-var Greeter = React.createClass({
-  render: function() {
+class Greeter extends React.Component {
+  render() {
     return <Translate {...this.props} content="example.greeting" />;
   }
-});
+}
 ```
 
 In the component's render function, we simply transfer all incoming props to Translate (the component this repo is all about). As `content` property we specify the string "example.greeting" which acts as the key into the translations dictionary of Counterpart.
@@ -205,7 +206,7 @@ Please take a look at this repo's `spec.js` file to see some more nice tricks li
 
 ## Asynchronous Rendering on the Server-side
 
-The above example for `server.js` will not work when you're calling `React.renderToString(...)` within the callback of an async function and calling `counterpart.setLocale(...)` synchronously outside of that callback. This is because the Counterpart module is used as a singleton instance inside of the Translate component. See PR [#6] for details.
+The above example for `server.js` will not work when you're calling `ReactDOMServer.renderToString(...)` within the callback of an async function and calling `counterpart.setLocale(...)` synchronously outside of that callback. This is because the Counterpart module is used as a singleton instance inside of the Translate component. See PR [#6] for details.
 
 To fix this, create a wrapper component (or extend your root component) and pass an instance of Counterpart as React context. Here's an example:
 
@@ -213,27 +214,28 @@ To fix this, create a wrapper component (or extend your root component) and pass
 var http = require('http');
 var Translator = require('counterpart').Instance;
 var React = require('react');
+var ReactDOMServer = require('react-dom/server');
 var Translate = require('react-translate-component');
 var MyApp = require('./my/components/App');
 
 var en = require('./my/locales/en');
 var de = require('./my/locales/de');
 
-var Wrapper = React.createClass({
-  childContextTypes: {
-    translator: Translate.translatorType
-  },
-
-  getChildContext: function() {
+class Wrapper extends React.Component {
+  getChildContext() {
     return {
       translator: this.props.translator
     };
-  },
+  }
 
-  render: function() {
+  render() {
     return <MyApp data={this.props.data} />;
   }
-});
+}
+
+Wrapper.childContextTypes = {
+  translator: Translate.translatorType
+};
 
 http.createServer(function(req, res) {
   var queryData = url.parse(req.url, true).query;
@@ -246,7 +248,9 @@ http.createServer(function(req, res) {
   doAsyncStuffHere(function(err, data) {
     if (err) { return err; }
 
-    var html = React.renderToString(<Wrapper data={data} translator={translator} />);
+    var html = ReactDOMServer.renderToString(
+      <Wrapper data={data} translator={translator} />
+    );
 
     res.write(html);
   });
