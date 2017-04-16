@@ -1,9 +1,10 @@
 'use strict';
 
-var React       = require('react');
-var ReactDOM    = require('react-dom');
+var React = require('react');
+var ReactDOM = require('react-dom');
+var createReactClass = require('create-react-class');
 var counterpart = require('counterpart');
-var Translate   = require('react-translate-component');
+var Translate = require('react-translate-component');
 
 // this is a counterpart-style convenience function that
 // returns a React component
@@ -20,7 +21,7 @@ counterpart.registerTranslations('de', require('./locales/de'));
 // uncomment the next line to set the initial locale to 'de'
 //counterpart.setLocale('de');
 
-var LanguageSwitcher = React.createClass({
+var LanguageSwitcher = createReactClass({
   handleChange: function(e) {
     counterpart.setLocale(e.target.value);
   },
@@ -44,7 +45,7 @@ var LanguageSwitcher = React.createClass({
   }
 });
 
-var PersonName = React.createClass({
+var PersonName = createReactClass({
   handleClick: function(e) {
     alert(counterpart.translate('example.you_clicked_on', { what: this.props.name }));
   },
@@ -54,7 +55,7 @@ var PersonName = React.createClass({
   }
 });
 
-var PeopleList = React.createClass({
+var PeopleList = createReactClass({
   render: function() {
     var items = this.props.people.map(function(person, index) {
       var name = <PersonName name={person.name} />;
@@ -77,7 +78,7 @@ var PeopleList = React.createClass({
   }
 });
 
-var SecondsPassed = React.createClass({
+var SecondsPassed = createReactClass({
   getInitialState: function() {
     return { seconds: 0 };
   },
@@ -101,7 +102,7 @@ var SecondsPassed = React.createClass({
   }
 });
 
-var App = React.createClass({
+var App = createReactClass({
   getDefaultProps: function() {
     return {
       locales: ['en', 'de'],
