@@ -286,7 +286,7 @@ Released under The MIT License.
 [1]: http://facebook.github.io/react/
 [2]: https://github.com/martinandert/counterpart
 [3]: https://github.com/martinandert/react-interpolate-component
-[4]: http://react-translate-demo.martinandert.com/
+[4]: http://react-translate-demo.andert.io/
 [5]: http://nodejs.org/
 [6]: https://www.npmjs.org/
 [7]: https://github.com/martinandert/counterpart#readme
