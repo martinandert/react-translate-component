@@ -1,6 +1,6 @@
 {
   "name": "react-translate-component",
-  "version": "0.14.0",
+  "version": "0.15.0",
   "description": "A component for React that utilizes the counterpart module to translate/localize its content",
   "main": "index.js",
   "repository": {
