@@ -64,7 +64,7 @@ describe('The Translate component', function() {
       assert.matches(/Hello, Martin/, render(Translate({ with: { name: 'Martin' }, content: ['test', 'greeting'] })));
 
       assert.matches(/Hello, <b>Martin<\/b>!/, render(Translate({ with: { name: 'Martin' }, unsafe: true, content: 'test.greeting_html' })));
-      assert.matches(/Hello, <b>Martin<\/b>!/, render(Translate({ with: { name: React.DOM.b(null, 'Martin') }, content: 'test.greeting' })));
+      assert.matches(/Hello, <b>Martin<\/b>!/, render(Translate({ with: { name: React.createElement('b', null, 'Martin') }, content: 'test.greeting' })));
 
       var propsWithScope = { with: { name: 'Martin' }, scope: ['test'], content: 'greeting' };
 
@@ -79,7 +79,7 @@ describe('The Translate component', function() {
       assert.matches(/Hello, Martin/, render(Translate({ name: 'Martin', content: ['test', 'greeting'] })));
 
       assert.matches(/Hello, <b>Martin<\/b>!/, render(Translate({ name: 'Martin', unsafe: true, content: 'test.greeting_html' })));
-      assert.matches(/Hello, <b>Martin<\/b>!/, render(Translate({ name: React.DOM.b(null, 'Martin'), content: 'test.greeting' })));
+      assert.matches(/Hello, <b>Martin<\/b>!/, render(Translate({ name: React.createElement('b', null, 'Martin'), content: 'test.greeting' })));
 
       var propsWithScope = { name: 'Martin', scope: ['test'], content: 'greeting' };
 
@@ -121,7 +121,7 @@ describe('The Translate component', function() {
   it('does not translate its children (since v0.7 the content attribute is used to translate the, well... content)', function() {
     counterpart.withLocale('de', function() {
       var props = { component: 'button', type: 'submit', attributes: { title: 'submit_button.tooltip' } };
-      var markup = render(Translate(props, React.DOM.span(null, 'Do it!')));
+      var markup = render(Translate(props, React.createElement('span', null, 'Do it!')));
 
       assert.matches(/^<button [^>]+><span[^>]*>Do it!<\/span><\/button>$/, markup);
       assert.matches(/\stitle="Klick mich!"/, markup);
